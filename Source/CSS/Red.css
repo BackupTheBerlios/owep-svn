@@ -12,12 +12,12 @@ a:visited {font-family: arial; font-size: 12px; color:rgb(128,0,0); text-decorat
 
 
 /* Style du menu */
-.caseMenuListe {height: 31px; background-image: url(http://localhost:8080/OWEP/Image/Red/caseMenuListe.png); padding-top: 0px; padding-bottom: 3px; background-color: rgb(128,0,0); padding-left: 5px; text-align: center}
-.caseMenuSeparation {height: 18px; background-image: url(http://localhost:8080/OWEP/Image/Red/caseMenuSeparation.png); background-color: rgb(255,204,153)}
-.caseMenuSeparation2 {background-image: url(http://localhost:8080/OWEP/Image/Red/caseMenuNiveau2.png); background-color: rgb(255,204,153)}
-.caseMenuConnexion {height: 18px; background-image: url(http://localhost:8080/OWEP/Image/Red/caseMenuNiveau2.png); padding-top: 1px; padding-bottom: 1px; background-color: rgb(255,204,153); text-align: center}
-.caseMenuNiveau1 {height: 25px; background-image: url(http://localhost:8080/OWEP/Image/Red/caseMenuNiveau1.png); padding-top: 1px; padding-bottom: 1px; background-color: rgb(128,0,0); padding-left: 9px}
-.caseMenuNiveau2 {height: 18px; background-image: url(http://localhost:8080/OWEP/Image/Red/caseMenuNiveau2.png); padding-top: 0px; padding-bottom: 0px; background-color: rgb(255,204,153); padding-left: 18px}
+.caseMenuListe {height: 31px; background-image: url(/OWEP/Image/Red/caseMenuListe.png); padding-top: 0px; padding-bottom: 3px; background-color: rgb(128,0,0); padding-left: 5px; text-align: center}
+.caseMenuSeparation {height: 18px; background-image: url(/OWEP/Image/Red/caseMenuSeparation.png); background-color: rgb(255,204,153)}
+.caseMenuSeparation2 {background-image: url(/OWEP/Image/Red/caseMenuNiveau2.png); background-color: rgb(255,204,153)}
+.caseMenuConnexion {height: 18px; background-image: url(/OWEP/Image/Red/caseMenuNiveau2.png); padding-top: 1px; padding-bottom: 1px; background-color: rgb(255,204,153); text-align: center}
+.caseMenuNiveau1 {height: 25px; background-image: url(/OWEP/Image/Red/caseMenuNiveau1.png); padding-top: 1px; padding-bottom: 1px; background-color: rgb(128,0,0); padding-left: 9px}
+.caseMenuNiveau2 {height: 18px; background-image: url(/OWEP/Image/Red/caseMenuNiveau2.png); padding-top: 0px; padding-bottom: 0px; background-color: rgb(255,204,153); padding-left: 18px}
 .menuListe {font-family: arial; background-color: rgb(180,50,15); font-size: 13px; color: rgb(255,255,255); font-weight: bolder}
 .menuConnexion:link {font-family: arial; font-size: 12px; color: rgb(51,85,165); font-weight: bold; text-decoration: none}
 .menuConnexion:active {font-family: arial; font-size: 12px; color: rgb(51,85,165); font-weight: bold; text-decoration: none}
@@ -33,7 +33,7 @@ a:visited {font-family: arial; font-size: 12px; color:rgb(128,0,0); text-decorat
 
 /* Style de la messagerie */
 .caseMessage {padding-right: 5px; background-color: rgb(255,204,153)}
-.caseMessageCommande {width: 90px; height: 26px; background-image: url(http://localhost:8080/OWEP/Image/Red/messageCommande.png); padding-left: 5px; padding-right: 5px; border: solid rgb(255,204,153); border-width:  0px 0px 0px 0px; background-color: rgb(128,0,0)}
+.caseMessageCommande {width: 90px; height: 26px; background-image: url(/OWEP/Image/Red/messageCommande.png); padding-left: 5px; padding-right: 5px; border: solid rgb(255,204,153); border-width:  0px 0px 0px 0px; background-color: rgb(128,0,0)}
 .message {font-family: arial; font-size: 11px; font-weight: bold; color: rgb(0,0,0)}
 .messageCommande:link {font-family: arial; font-size: 12px; font-weight: bold; color: white}
 .messageCommande:active {font-family: arial; font-size: 12px; font-weight: bold; color: white}
@@ -50,10 +50,10 @@ a:visited {font-family: arial; font-size: 12px; color:rgb(128,0,0); text-decorat
 /* Styles généraux des différentes régions */
 .regionGauche {border: solid rgb(128,0,0); border-width:  2px 0px 0px 2px}
 .regionDroit {border: solid rgb(128,0,0); border-width:  2px 2px 0px 0px}
-.regionLogo {height: 159px; width: 170px; background-image: url(http://localhost:8080/OWEP/Image/Red/regionLogo.png); font-size: 12px; color: black; background-color: rgb(255,204,153)}
+.regionLogo {height: 159px; width: 170px; background-image: url(/OWEP/Image/Red/regionLogo.png); font-size: 12px; color: black; background-color: rgb(255,204,153)}
 .regionMenu {font-size: 12px; color: black}
 .regionMessagerie {border: rgb(128,0,0); border-width:  0px 0px 1px 0px; background-color: rgb(255,204,153)}
-.regionPied {background-image: url(http://localhost:8080/OWEP/Image/Red/regionPied.png); height: 18px; border: solid rgb(128,0,0); border-width:  0px 2px 2px 2px; background-color: rgb(128,0,0); color: rgb(255,255,255); font-size: 12px; font-weight: bold; text-align : center}
+.regionPied {background-image: url(/OWEP/Image/Red/regionPied.png); height: 18px; border: solid rgb(128,0,0); border-width:  0px 2px 2px 2px; background-color: rgb(128,0,0); color: rgb(255,255,255); font-size: 12px; font-weight: bold; text-align : center}
 .casePied {font-size: 12px; font-weight: bold; text-align : center}
 .regionPrincipal {padding-left: 8px; padding-right: 8px; border: solid rgb(128,0,0); border-width: 1px 0px 0px 1px; font-size: 12px}
 .regionContenu {vertical-align: top; padding-top: 8px; padding-bottom: 8px; padding-top: 8px}

@@ -1,3 +1,4 @@
+@charset "iso-8859-1";
 body {font-family: arial; font-size: 12px; color: rgb(0,0,0); background-color: rgb(255,255,255)}
 a {font-family: arial; font-size: 12px; color:rgb(128,0,0); text-decoration: none}
 a:link {font-family: arial; font-size: 12px; color:rgb(128,0,0); text-decoration: none}
@@ -49,7 +50,7 @@ td.caseMessageCommande {padding-left: 5px; padding-right: 5px; padding-top: 1px;
 /* Styles généraux des différentes régions */
 .regionGauche {border: solid rgb(128,0,0); border-width:  2px 1px 2px 2px}
 .regionDroit {border: solid rgb(128,0,0); border-width:  2px 2px 2px 0px}
-.regionLogo {height: 159px; width: 170px; background-image: url(http://localhost:8080/OWEP/Image/Standard/regionLogo.gif); font-size: 14px; color: black; background-color: rgb(255,204,153)}
+.regionLogo {height: 159px; width: 170px; background-image: url(/OWEP/Image/Standard/regionLogo.gif); font-size: 14px; color: black; background-color: rgb(255,204,153)}
 .regionMenu {font-size: 14px; color: black}
 .regionMessagerie {border: solid rgb(180,50,15); border-width:  0px 0px 1px 0px; background-color: rgb(255,204,153)}
 .regionPied {border: solid rgb(128,0,0); border-width:  0px 1px 1px 1px; background-color: rgb(180,50,15); color: rgb(255,255,255); font-size: 14px; font-weight: bold; text-align : center}

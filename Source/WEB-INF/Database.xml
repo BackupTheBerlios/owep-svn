@@ -4,7 +4,7 @@
   <database name="owep" engine="mysql">
     <driver class-name="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/owep">
       <param name="user" value="root"/>
-      <param name="password" value="puppetmaster"/>
+      <param name="password" value="*****"/>
     </driver>
     <mapping href="Owep-mapping.xml"/>
   </database>

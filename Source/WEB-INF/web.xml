@@ -8,29 +8,132 @@
     <taglib-uri>/WEB-INF/tld/template.tld</taglib-uri>
     <taglib-location>/WEB-INF/tld/template.tld</taglib-location>
   </taglib>
+  <taglib>
+    <taglib-uri>/WEB-INF/tld/transfert.tld</taglib-uri>
+    <taglib-location>/WEB-INF/tld/transfert.tld</taglib-location>
+  </taglib>
+  
 
   <!-- Liste des Servlets -->
   <servlet> 
     <servlet-name>CListeTacheVisu</servlet-name> 
-    <servlet-class>owep.controle.CListeTacheVisu</servlet-class> 
+    <servlet-class>owep.controle.tache.CListeTacheVisu</servlet-class> 
   </servlet> 
   <servlet-mapping> 
     <servlet-name>CListeTacheVisu</servlet-name> 
     <url-pattern>/Tache/ListeTacheVisu</url-pattern> 
   </servlet-mapping> 
   
+  <servlet>
+    <servlet-name>CTacheVisu</servlet-name> 
+    <servlet-class>owep.controle.tache.CTacheVisu</servlet-class> 
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CTacheVisu</servlet-name> 
+    <url-pattern>/Tache/TacheVisu</url-pattern> 
+  </servlet-mapping>
+ 
+  <!-- Liste des Servlets pour les artefacts --> 
   <servlet> 
-    <servlet-name>CRapportActivite</servlet-name> 
-    <servlet-class>owep.controle.CRapportActivite</servlet-class> 
+    <servlet-name>CArtefactAjout</servlet-name> 
+    <servlet-class>owep.controle.artefact.CArtefactAjout</servlet-class> 
   </servlet> 
   <servlet-mapping> 
-    <servlet-name>CRapportActivite</servlet-name> 
-    <url-pattern>/Tache/RapportActivite</url-pattern> 
+    <servlet-name>CArtefactAjout</servlet-name> 
+    <url-pattern>/Artefact/ArtefactAjout</url-pattern> 
+  </servlet-mapping>   
+  
+  
+  <!-- Liste des Servlets pour la connexion -->  
+  
+  <servlet> 
+    <servlet-name>CEtat</servlet-name> 
+    <servlet-class>owep.controle.tache.CEtat</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CEtat</servlet-name> 
+    <url-pattern>/Tache/Etat</url-pattern> 
+  </servlet-mapping>
+  
+  <servlet> 
+    <servlet-name>CValidationRapport</servlet-name> 
+    <servlet-class>owep.controle.tache.CValidationRapport</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CValidationRapport</servlet-name> 
+    <url-pattern>/Tache/ValidationRapport</url-pattern> 
+  </servlet-mapping>
+  
+  <servlet> 
+    <servlet-name>CConnexion</servlet-name> 
+    <servlet-class>owep.controle.outil.CConnexion</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CConnexion</servlet-name> 
+    <url-pattern>/Outil/Connexion</url-pattern> 
   </servlet-mapping> 
+  
+  <servlet> 
+    <servlet-name>CDeconnexion</servlet-name> 
+    <servlet-class>owep.controle.outil.CDeconnexion</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CDeconnexion</servlet-name> 
+    <url-pattern>/Outil/Deconnexion</url-pattern> 
+  </servlet-mapping> 
+  
+  <servlet> 
+    <servlet-name>CCreationCollaborateur</servlet-name> 
+    <servlet-class>owep.controle.processus.CCreationCollaborateur</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CCreationCollaborateur</servlet-name> 
+    <url-pattern>/Processus/CreationCollaborateur</url-pattern> 
+  </servlet-mapping> 
+
+  <servlet> 
+    <servlet-name>COuvrirProjet</servlet-name> 
+    <servlet-class>owep.controle.projet.COuvrirProjet</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>COuvrirProjet</servlet-name> 
+    <url-pattern>/Projet/OuvrirProjet</url-pattern> 
+  </servlet-mapping> 
+
+
+    <!-- Liste des Servlets Processus -->
+  <servlet>
+    <servlet-name>CProjetVisu</servlet-name>
+    <servlet-class>owep.controle.processus.CProjetVisu</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CProjetVisu</servlet-name>
+    <url-pattern>/Processus/ProjetVisu</url-pattern>
+  </servlet-mapping>
+    
+    <!-- Navigation -->
+  <servlet>
+    <servlet-name>CNavigationIteration</servlet-name>
+    <servlet-class>owep.controle.navigation.CNavigationIteration</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CNavigationIteration</servlet-name>
+    <url-pattern>/Navigation/NavigationIteration</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>CIterationModif</servlet-name>
+    <servlet-class>owep.controle.processus.CIterationModif</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CIterationModif</servlet-name>
+    <url-pattern>/Processus/IterationModif</url-pattern>
+  </servlet-mapping>
   
   <!-- Configuration de la session -->
   <session-config>
 	<session-timeout>30</session-timeout>
   </session-config>
+
 
 </web-app>

@@ -20,6 +20,7 @@ public class VTemplateTag extends TagSupport
   
   /**
    * Crée un nouveau template (en l'insérant dans la pile).
+   * @return Statut du tag.
    * @throws JspException -
    */
   public int doStartTag () throws JspException
@@ -42,6 +43,7 @@ public class VTemplateTag extends TagSupport
   /**
    * Inclus la page définissant les régions pour générer la page, puis supprime le template de la
    * pile (puisque le traîtement sur celui-ci est terminé).
+   * @return Statut du tag.
    * @throws JspException Si le fichier ne peut être inclu
    */
   public int doEndTag () throws JspException
@@ -64,7 +66,7 @@ public class VTemplateTag extends TagSupport
   
   /**
    * Initialise le nom du fichier implémentant le template (association de régions et de sections).
-   * @param pNom Nom du fichier implémentant le template
+   * @param pNomFichier Nom du fichier implémentant le template
    */
   public void setNom (String pNomFichier)
   {

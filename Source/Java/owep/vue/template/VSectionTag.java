@@ -20,6 +20,7 @@ public class VSectionTag extends TagSupport
   /**
    * Ajoute la nouvelle section dans la pile de template.
    * @throws JspException -
+   * @return Statut du tag.
    */
   public int doStartTag () throws JspException
   {
@@ -39,7 +40,7 @@ public class VSectionTag extends TagSupport
 
   /**
    * Indique si la section à afficher est une page ou un simple texte
-   * @param pPage Vrai si la section à afficher est une page ou Faux s'il s'agit de texte simple
+   * @param pTypePage Vrai si la section à afficher est une page ou Faux s'il s'agit de texte simple
    */
   public void setTypePage (String pTypePage)
   {

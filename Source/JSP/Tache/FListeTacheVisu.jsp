@@ -5,18 +5,22 @@
 <jsp:useBean id="lCollaborateur" class="owep.modele.execution.MCollaborateur" scope="page"/>
 <jsp:useBean id="lTache"         class="owep.modele.execution.MTache"         scope="page"/> 
 
+<%
+    SimpleDateFormat lDateFormat = new SimpleDateFormat ("dd/MM/yyyy") ;
+    lCollaborateur = (MCollaborateur) request.getAttribute (CConstante.PAR_COLLABORATEUR) ;
+    if(lCollaborateur.getNbTaches()>0)
+    {
+%>
+
 <table class="tableau" border="0" cellpadding="0" cellspacing="0">
 <tbody>
   <tr>
     <td class="caseNiveau1" rowspan="2">Tâches</td>
-    <td class="caseNiveau1" rowspan="2">Artefact</td>
-    <td class="caseNiveau1" rowspan="2">Charge prévue</td>
-    <td class="caseNiveau1" rowspan="2">Temps passé</td>
-    <td class="caseNiveau1" rowspan="2">Reste à passer</td>
+    <td class="caseNiveau1" rowspan="2">Temps prévu(h)</td>
+    <td class="caseNiveau1" rowspan="2">Temps passé(h)</td>
+    <td class="caseNiveau1" rowspan="2">Reste à passer(h)</td>
     <td class="caseNiveau1" rowspan="2">Etat</td>
     <td class="caseNiveau1" colspan="4">Date</td>
-    <td class="caseNiveau1" rowspan="2">% Avancement</td>
-    <td class="caseNiveau1" rowspan="2">Budget consommé</td>
     <td class="caseNiveau1" colspan="2">Dépassement de charge</td>
   </tr>
   <tr>
@@ -25,35 +29,84 @@
     <td class="caseNiveau1">fin prévue</td>
     <td class="caseNiveau1">fin réestimée</td>
     <td class="caseNiveau1">(%)</td>
-    <td class="caseNiveau1">(h x j)</td>
+    <td class="caseNiveau1">(h)</td>
   </tr>
   
   <%
-    lCollaborateur = (MCollaborateur) request.getAttribute (CConstante.PAR_COLLABORATEUR) ;
-    for (int i = 0; i < lCollaborateur.getNbTache (); i ++)
+    for (int i = 0; i < lCollaborateur.getNbTaches(); i ++)
     {
       lTache = lCollaborateur.getTache (i) ;
   %>
     <tr>
-      <td class='caseNiveau2'><%= lTache.getNom ()%></td>
+      <td class='caseNiveau2'><a href="/owep/Tache/TacheVisu?pTacheAVisualiser=<%= lTache.getId()%>"><%= lTache.getNom ()%></a></td>
   
       <!-- Affiche la liste des artefacts -->
-      <td class='caseNiveau2'>
-        <%
-          SimpleDateFormat lDateFormat = new SimpleDateFormat ("dd/MM/yyyy") ;
-          out.print (lTache.getArtefactSortie (lTache.getNbArtefactSortie () - 1).getNom ()) ;
-          for (int j = 0; j < lTache.getNbArtefactSortie () - 1; j ++)
-          {
-            out.print ("<br/>" + lTache.getArtefactSortie (j).getNom ()) ;
-          }
-        %>
-      </td>
-      
+            
       <!-- Affiche les propriétés de la tâche -->
-      <td class='caseNiveau3'><%=lTache.getChargeInitiale ()%></td>
-      <td class='caseNiveau3'><%=lTache.getTempsPasse ()    %></td>
-      <td class='caseNiveau3'><%=lTache.getResteAPasser ()  %></td>
-      <td class='caseNiveau3'><%=lTache.getEtat ()          %></td>
+      <td class='caseNiveau3'><%=(int)lTache.getChargeInitiale ()%></td>
+      <td class='caseNiveau3'><%=(int)lTache.getTempsPasse ()    %></td>
+      <td class='caseNiveau3'><%=(int)lTache.getResteAPasser ()  %></td>
+      <!-- On passe l id du bouton cliqué et l id de la tache en parametre de la requete -->      
+      <td class='caseNiveau3'>
+      <!-- Si le collaborateur n'a pas de taches en état démarré, on peut commencer ou reprendre n'importe quelle tâche -->  
+      <% if(lCollaborateur.getTacheEnCours()==0)
+           {
+            switch (lTache.getEtat())
+             { 
+               case -1 : %>
+                 <%-- Pour etat créé --%>
+                 Tâche non prête
+            <%  break ;
+               case 0 : %>
+                 <%-- Affichage boutons pour etat non commencé --%>
+                 <a href="/owep/Tache/Etat?pBoutonClique=1&<%=CConstante.PAR_TACHE%>=<%=lTache.getId()%>"><IMG SRC="<%=owep.infrastructure.localisation.LocalisateurIdentifiant.LID_PLAY%>"></a><IMG SRC="<%=owep.infrastructure.localisation.LocalisateurIdentifiant.LID_PAUSE%>"><IMG SRC="<%=owep.infrastructure.localisation.LocalisateurIdentifiant.LID_STOP%>">
+            <%  break ; 
+               case 1 : %>
+                 <%-- Affichage boutons pour etat commencé --%>
+                 <IMG SRC="<%=owep.infrastructure.localisation.LocalisateurIdentifiant.LID_PLAYACTIF%>"><a href="/owep/Tache/Etat?pBoutonClique=2&<%=CConstante.PAR_TACHE%>=<%=lTache.getId()%>"><IMG SRC="<%=owep.infrastructure.localisation.LocalisateurIdentifiant.LID_PAUSE%>"></a><a href="/owep/Tache/Etat?pBoutonClique=3&<%=CConstante.PAR_TACHE%>=<%=lTache.getId()%>"><IMG SRC="<%=owep.infrastructure.localisation.LocalisateurIdentifiant.LID_STOP%>"></a>
+            <% break ; 
+               case 2 : %>
+                 <%-- Affichage boutons pour etat suspendu --%>
+                 <a href="/owep/Tache/Etat?pBoutonClique=1&<%=CConstante.PAR_TACHE%>=<%=lTache.getId()%>"><IMG SRC="<%=owep.infrastructure.localisation.LocalisateurIdentifiant.LID_PLAY%>"></a><IMG SRC="<%=owep.infrastructure.localisation.LocalisateurIdentifiant.LID_PAUSEACTIF%>"><IMG SRC="<%=owep.infrastructure.localisation.LocalisateurIdentifiant.LID_STOP%>">
+            <% break ;
+               case 3 : %>
+                 <!-- Affichage boutons pour etat terminé -->
+                 Terminée
+            <!-- Si le collaborateur a une tache en état démarré, on ne peut modifier l'état que de cette tâche -->
+            <% }
+           } 
+          else if(lCollaborateur.getTacheEnCours()==1)
+           {
+            switch (lTache.getEtat())
+             { 
+               case -1 : 
+                 %>
+                 <%-- Pour etat créé --%>
+                 Tâche non prête
+            <%  break ;
+               case 0 : 
+                 %>
+                 <%-- Affichage boutons non clicables pour etat non commencé --%>
+                 <IMG SRC="<%=owep.infrastructure.localisation.LocalisateurIdentifiant.LID_PLAY%>"><IMG SRC="<%=owep.infrastructure.localisation.LocalisateurIdentifiant.LID_PAUSE%>"><IMG SRC="<%=owep.infrastructure.localisation.LocalisateurIdentifiant.LID_STOP%>">
+            <%   break ; 
+               case 1 : 
+                 %>
+                 
+									<%-- Affichage boutons pour etat commencé --%>
+                 <IMG SRC="<%=owep.infrastructure.localisation.LocalisateurIdentifiant.LID_PLAYACTIF%>"><a href="/owep/Tache/Etat?pBoutonClique=2&<%=CConstante.PAR_TACHE%>=<%=lTache.getId()%>"><IMG SRC="<%=owep.infrastructure.localisation.LocalisateurIdentifiant.LID_PAUSE%>"></a><a href="/owep/Tache/Etat?pBoutonClique=3&<%=CConstante.PAR_TACHE%>=<%=lTache.getId()%>"><IMG SRC="<%=owep.infrastructure.localisation.LocalisateurIdentifiant.LID_STOP%>"></a>
+               
+            <%   break ;  
+               case 2 : 
+                 %>
+                 <%-- Affichage boutons non clicables pour etat suspendu --%>
+                 <IMG SRC="<%=owep.infrastructure.localisation.LocalisateurIdentifiant.LID_PLAY%>"><IMG SRC="<%=owep.infrastructure.localisation.LocalisateurIdentifiant.LID_PAUSEACTIF%>"><IMG SRC="<%=owep.infrastructure.localisation.LocalisateurIdentifiant.LID_STOP%>">
+            <%   break ; 
+               case 3 : %>
+                 <!-- Affichage boutons pour etat terminé -->
+                 Terminée
+          <% }
+           } %>
+      </td>
       <td class='caseNiveau3'><% if (lTache.getDateDebutPrevue () != null)
                                  {
                                    out.print (lDateFormat.format (lTache.getDateDebutPrevue ())) ;
@@ -90,13 +143,13 @@
                                    out.print ("X") ;
                                  } %>
       </td>
-      <td class='caseNiveau3'><%= lTache.getPrcAvancement () * 100        %></td>
-      <td class='caseNiveau3'><%= lTache.getBudgetConsomme () * 100       %></td>
-      <td class='caseNiveau3'><%= lTache.getPrcDepassementCharge () * 100 %></td>
-      <td class='caseNiveau3'><%= lTache.getHJDepassementCharge ()        %></td>
+      <td class='caseNiveau3'><%= (int)(lTache.getPrcDepassementCharge () * 100) %></td>
+      <td class='caseNiveau3'><%= (int)lTache.getHJDepassementCharge ()        %></td>
     </tr>
   <%
     }
   %>
 </tbody>
 </table>
+
+<%}%>

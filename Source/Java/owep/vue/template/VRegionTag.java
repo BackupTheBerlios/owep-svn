@@ -19,6 +19,7 @@ public class VRegionTag extends TagSupport
   /**
    * Récupère la section correspondant à la région, dans  la pile de template, puis l'affiche dans
    * la page.
+   * @return Statut du tag.
    * @throws JspException S'il est impossible d'écrire la section sur le flux de sortie
    */
   public int doStartTag () throws JspException

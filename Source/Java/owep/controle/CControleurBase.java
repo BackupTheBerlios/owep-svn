@@ -7,9 +7,11 @@ import javax.servlet.ServletException ;
 import javax.servlet.http.HttpServlet ;
 import javax.servlet.http.HttpServletRequest ;
 import javax.servlet.http.HttpServletResponse ;
+import javax.servlet.http.HttpSession;
 import org.exolab.castor.jdo.Database ;
 import org.exolab.castor.jdo.JDO ;
-import owep.infrastructure.localisation.LocalisateurIdentifiant;
+import owep.infrastructure.Session ;
+import owep.infrastructure.localisation.LocalisateurIdentifiant ;
 
 
 /**
@@ -21,13 +23,16 @@ public abstract class CControleurBase extends HttpServlet
   private HttpServletRequest  mRequete ; // Requête HTTP à l'origine de l'appel du controleur
   private HttpServletResponse mReponse ; // Réponse HTTP du controleur à la requête
   private Database mBaseDonnees ;        // Connexion à la base de données
-  
+  private Session mSession ;             // Session associé à la connexion
+
   
   /**
    * Appellé lors d'une requête d'un client. Redirige le client vers la page retourné par la méthode
    * traiter.
    * @param pRequete Requête HTTP à l'origine de l'appel du controleur
    * @param pReponse Réponse HTTP du controleur à la requête
+   * @throws ServletException Si une erreur survient durant le traitement de la page.
+   * @throws IOException Si une erreur survient durant le traitement de la page.
    */
   protected void doGet (HttpServletRequest pRequete, HttpServletResponse pReponse)
     throws ServletException, IOException
@@ -41,6 +46,8 @@ public abstract class CControleurBase extends HttpServlet
    * vers la page retourné par la méthode traiter.
    * @param pRequete Requête HTTP à l'origine de l'appel du controleur
    * @param pReponse Réponse HTTP du controleur à la requête
+   * @throws ServletException Si une erreur survient durant le traitement de la page.
+   * @throws IOException Si une erreur survient durant le traitement de la page.
    */
   protected void doPost (HttpServletRequest pRequete, HttpServletResponse pReponse)
     throws ServletException, IOException
@@ -52,21 +59,33 @@ public abstract class CControleurBase extends HttpServlet
     mRequete = pRequete ;
     mReponse = pReponse ;
     
-    // Initie la connexion à la base de données.
-    try
+    // Vérifie qu'une session a été ouverte
+    HttpSession lSession = mRequete.getSession (true) ;
+    mSession = (Session) lSession.getAttribute (CConstante.SES_SESSION) ;
+    if(mSession == null)
     {
-      JDO.loadConfiguration (LocalisateurIdentifiant.LID_BDCONFIGURATION) ;
-      lJdo = new JDO (LocalisateurIdentifiant.LID_BDNOM) ;
+      lSession.invalidate();
+      lRequeteDispatcher = pRequete.getRequestDispatcher ("..\\JSP\\index.jsp") ;
+      lRequeteDispatcher.forward (mRequete, mReponse) ;
+    }
+    else
+    {
+    
+      // Initie la connexion à la base de données.
+      try
+      {
+        JDO.loadConfiguration (LocalisateurIdentifiant.LID_BDCONFIGURATION) ;
+        lJdo = new JDO (LocalisateurIdentifiant.LID_BDNOM) ;
 
-      mBaseDonnees = lJdo.getDatabase () ;
-      mBaseDonnees.setAutoStore (false) ;
+        mBaseDonnees = lJdo.getDatabase () ;
+        mBaseDonnees.setAutoStore (false) ;
     }
     catch (Exception eException)
     {
       eException.printStackTrace () ;
       throw new ServletException (CConstante.EXC_CONNEXION) ;
     }
-    
+      
     // Appelle la JSP d'affichage retournée par traiter.
     initialiserBaseDonnees () ;
     initialiserParametres () ;
@@ -77,7 +96,12 @@ public abstract class CControleurBase extends HttpServlet
     }
     else
     {
+      // mis à jour de la session
+      lSession.setAttribute ("SESSION", mSession) ;
+      
+      // redirection vers la page convenue
       lRequeteDispatcher.forward (mRequete, mReponse) ;
+    }
     }
   }
   
@@ -109,6 +133,16 @@ public abstract class CControleurBase extends HttpServlet
   public HttpServletRequest getRequete ()
   {
     return mRequete ;
+  }
+  
+  
+  /**
+   * Récupère la session ouverte.
+   * @return Session ouverte.
+   */
+  public Session getSession()
+  {
+    return mSession;
   }
   
   

@@ -1,19 +1,77 @@
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<%@page import="java.util.ArrayList"%>
+<%@page import="owep.infrastructure.Session"%>
+<%@page import="owep.modele.execution.MProjet"%>
+<%@page import="java.util.ResourceBundle"%>
+
+<%//Récupération du ressource bundle%>
+<%
+  Session getSession = (Session)(request.getSession().getAttribute("SESSION"));
+  ResourceBundle messages = getSession.getMessages();
+%>  
+
+<jsp:useBean id="lSession" class="owep.infrastructure.Session" scope="page"/>
+<jsp:useBean id="lProjet" class="owep.modele.execution.MProjet" scope="page"/>
+
+<%
+  // Déclaration des variables
+  int idProjetOuvert ;
+  
+  // Recuperation de la session
+  HttpSession httpSession = request.getSession(true);
+  lSession = (Session) httpSession.getAttribute("SESSION");
+  
+  // Recuperation de la liste de projet possible
+  ArrayList lListProjet = lSession.getListProjetPossible();
+  
+  // Recuperation du projet ouvert
+  lProjet = lSession.getProjet();
+  
+  // Si aucun projet n'est ouvert
+  if(lProjet == null)
+  {
+    // Alors  la variable idProjetOuvert prend pour valeur -1
+    idProjetOuvert = -1;
+  }
+  else
+  {
+    // Sinon la variable prend pour valeur l'id du projet
+    idProjetOuvert = lProjet.getId();
+  }
+%>
+
 <table class="regionMenu" style="width : 100%; height : 100%" cellpadding="0" cellspacing="0">
+<!-- <table width="100%" height="100%" cellpadding="0" cellspacing="0"> -->
 <tbody>
+
   <!-- menu Avancement -->
   <tr>
-    <td class="caseMenuListe">
-      <select class="menuListe" name="LDProjet" size ="1">
-        <option VALUE="Projet1">Projet 1</option>
+    <td class="caseMenuProjet">
+    
+    <form name="changerProjet" action="../Projet/OuvrirProjet" method="post">
+      <!-- Le formulaire ayant pour nom changerProjet est envoyé dés qu'un changement sur la sélection de la liste a été constaté -->
+      <select class="menuProjet" name="mIdProjet" size ="1" onchange="changerProjet.submit()">
+<%
+  // Affichage de la liste des projets possibles
+  // Le projet ouvert est sélectionné par défaut
+  for(int i = 0 ; i<lListProjet.size() ; i++)
+  {
+    lProjet = (MProjet) lListProjet.get(i);
+%>
+        <option VALUE="<%=lProjet.getId()%>" <%=(idProjetOuvert == lProjet.getId())?"selected":""%>>
+          <%=lProjet.getNom()%>
+        </option>
+<%
+  }
+%>
       </select>
+    </form>
+    
     </td>
   </tr>
   <tr>
     <td class="caseMenuConnexion">
-      <a class="menuConnexion" href="">
-        Déconnexion 
-      </a>
+      <a class="menuConnexion" href="../Outil/Deconnexion"><%=messages.getString("menuDeconnexion")%></a>
     </td>
   </tr>
   <tr>
@@ -22,10 +80,11 @@
     </td>
   </tr>
   
+  
   <!-- menu avancement -->
   <tr>
     <td class="caseMenuNiveau1">
-      <font class="menuNiveau1">Avancement :</font>
+      <p class="menuNiveau1">Avancement :</p>
     </td>
   </tr>
   <tr>
@@ -34,45 +93,51 @@
     </td>
   </tr>
   <tr>
-    <td class="caseMenuNiveau2">
-      <a class="menuNiveau2" href="../Tache/RapportActivite">Rapport d'activité</a>
-    </td>
-  </tr>
-  <tr>
     <td class="caseMenuSeparation">
       &nbsp;
     </td>
   </tr>
 
+
+<%//Test droit : partie chef de projet
+  if (((owep.infrastructure.Session)(request.getSession().getAttribute("SESSION"))).getCollaborateur().getDroit() == 1) {%>
+
   <!-- menu projet -->
   <tr>
     <td class="caseMenuNiveau1">
-      <font class="menuNiveau1">Projet :</font>
+      <p class="menuNiveau1">Projet :</p>
     </td>
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      Suivi du projet
+      <a class="menuNiveau2" href="../Processus/ProjetVisu">Suivi du projet</a>
     </td>
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      Suivi des collaborateurs
+      <p class="menuNiveau2">Suivi des collaborateurs</p>
     </td>
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      Gestion des risques
+      <p class="menuNiveau2">Gestion des risques</p>
     </td>
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      Gestion des problèmes
+      <p class="menuNiveau2">Gestion des problèmes</p>
+    </td>
+  </tr>
+  <tr>
+    <td class="caseMenuNiveau2">
+
+      <a class="menuNiveau2" href="../Processus/CreationCollaborateur">Gestion des collaborateurs</a>
     </td>
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
       Tâche imprévues
+
     </td>
   </tr>
   <tr>
@@ -81,12 +146,23 @@
     </td>
   </tr>
   
+  <%}%>
+  
   <!-- menu configuration -->
   <tr>
     <td class="caseMenuNiveau1">
-      <font class="menuNiveau1">Configuration :</font>
+      <p class="menuNiveau1">Configuration :</p>
     </td>
   </tr>
+  <tr>
+    <td class="caseMenuNiveau2">
+
+      Modifier son profil
+    </td>
+  </tr>
+  
+<%//Test droit : partie chef de projet
+  if (((owep.infrastructure.Session)(request.getSession().getAttribute("SESSION"))).getCollaborateur().getDroit() == 1) {%>  
   <tr>
     <td class="caseMenuNiveau2">
       Option de l'application
@@ -94,11 +170,12 @@
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      Option de projet
+      <p class="menuNiveau2">Option de projet</p>
     </td>
   </tr>
+<%}%>  
   <tr>
-    <td style="height : 100%" class="caseMenuSeparation2">
+    <td height="100%" class="caseMenuSeparation2">
       &nbsp;
     </td>
   </tr>

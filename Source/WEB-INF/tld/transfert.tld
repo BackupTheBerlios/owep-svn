@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN" "http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd"> 
+
+<taglib>
+  
+  <tlibversion>1.0</tlibversion>
+  <jspversion>1.1</jspversion>
+  <shortname>Simple Transfert System</shortname>
+  
+  <!-- tag transfertbean -->
+  <tag>
+    <name>transfertbean</name>
+    <tagclass>owep.vue.transfert.VTransfertBeanTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+
+    <!-- liste des attributs -->
+    <attribute>
+      <name>scope</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>bean</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>type</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute> 
+    <attribute>
+      <name>idArbre</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute> 
+  </tag>
+  
+  
+  <!-- tag transfertchamp -->
+  <tag>   
+    <name>transfertchamp</name>
+    <tagclass>owep.vue.transfert.VTransfertChampTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+    
+    <!-- liste des attributs -->
+    <attribute>
+      <name>membre</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>type</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>libelle</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>obligatoire</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>convertor</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>idArbre</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  
+  
+  <!-- tag transfertsubmit -->
+  <tag>   
+    <name>transfertsubmit</name>
+    <tagclass>owep.vue.transfert.VTransfertSubmitTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+    
+    <!-- liste des attributs -->
+    <attribute>
+      <name>libelle</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>valeur</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>verification</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute> 
+    <attribute>
+      <name>validation</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute> 
+  </tag>
+  
+</taglib>

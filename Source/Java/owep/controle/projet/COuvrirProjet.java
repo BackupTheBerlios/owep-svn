@@ -4,6 +4,7 @@ package owep.controle.projet ;
 import java.util.ArrayList ;
 
 import javax.servlet.ServletException ;
+import javax.servlet.http.HttpSession;
 
 import org.exolab.castor.jdo.OQLQuery ;
 import org.exolab.castor.jdo.PersistenceException ;
@@ -11,6 +12,7 @@ import org.exolab.castor.jdo.QueryResults ;
 
 import owep.controle.CConstante ;
 import owep.controle.CControleurBase ;
+import owep.infrastructure.Session;
 import owep.modele.execution.MCollaborateur ;
 import owep.modele.execution.MIteration;
 import owep.modele.execution.MProjet ;
@@ -23,7 +25,8 @@ public class COuvrirProjet extends CControleurBase
 {
   private String mIdProjet ; // Id du projet que le collaborateur souhaite ouvrir
   private ArrayList mListeProjetPossible ; // Liste des projets concernant l'utilisateur connecté
-
+  private Session mSession ;              // Session associé à la connexion 
+  
   /**
    * Récupère les données nécessaire au controleur dans la base de données.
    * 
@@ -36,12 +39,18 @@ public class COuvrirProjet extends CControleurBase
     QueryResults lResultat ; // Résultat de la requête sur la base
     MProjet lProjet ; // Projet enregistré
 
-    MCollaborateur lCollaborateur = getSession ().getCollaborateur () ; // Collaborateur connecté
+    MCollaborateur lCollaborateur = null;
+    int idCollab = getSession ().getIdCollaborateur () ; // Collaborateur connecté
     mListeProjetPossible = new ArrayList () ;
 
     try
     {
       getBaseDonnees ().begin () ;
+      
+      lRequete = getBaseDonnees().getOQLQuery("select COLLABORATEUR from owep.modele.execution.MCollaborateur COLLABORATEUR where mId=$1");
+      lRequete.bind(idCollab);
+      lResultat = lRequete.execute();
+      lCollaborateur = (MCollaborateur) lResultat.next();
 
       // Cherche tous les projets enregistré
       lRequete = getBaseDonnees ()
@@ -105,6 +114,7 @@ public class COuvrirProjet extends CControleurBase
     OQLQuery lRequete ; // Requête à réaliser sur la base
     QueryResults lResultat ; // Résultat de la requête sur la base
     MProjet lProjet ; // Projet à ouvrir
+    MCollaborateur lCollaborateur ; 
 
     if (mIdProjet == null)
     {
@@ -147,14 +157,38 @@ public class COuvrirProjet extends CControleurBase
       lRequete.bind (lProjet) ;
       lResultat = lRequete.execute () ;
 
-      MIteration lIteration = (MIteration) lResultat.next () ;
+      MIteration lIteration = null;
+      if(lResultat.hasMore())
+        lIteration = (MIteration) lResultat.next () ;
 
       getBaseDonnees ().commit () ;
 
+      if (lIteration == null)
+      { 
+        // Récupère le collaborateur connecté
+        HttpSession session = getRequete ().getSession (true) ;
+        mSession = (Session)session.getAttribute("SESSION") ;
+        //lCollaborateur = mSession.getCollaborateur() ;
+        
+        getBaseDonnees ().begin () ;
+        
+        int idCollab = mSession.getIdCollaborateur() ;
+        // Récupère la liste des tâches du collaborateur.
+        lRequete = getBaseDonnees ().getOQLQuery ("select COLLABORATEUR from owep.modele.execution.MCollaborateur COLLABORATEUR where mId = $1") ;
+        lRequete.bind (idCollab) ;
+        lResultat      = lRequete.execute () ;
+        lCollaborateur = (MCollaborateur) lResultat.next () ;
+        
+        getBaseDonnees ().commit () ;
+        
+        getSession ().setIteration(null);
+        getRequete ().setAttribute (CConstante.PAR_COLLABORATEUR, lCollaborateur) ;
+        return "..\\JSP\\Iteration\\TAucuneIteration.jsp" ;
+      }  
+      
       // Enregistre l'itération à ouvrir dans la session
       getSession ().setIteration(lIteration) ;      
       
-      return "..\\Tache\\ListeTacheVisu" ;
     }
     catch (PersistenceException e)
     {
@@ -174,62 +208,8 @@ public class COuvrirProjet extends CControleurBase
         throw new ServletException (CConstante.EXC_DECONNEXION) ;
       }
     }
+
+    return "..\\Tache\\ListeTacheVisu" ;
   }
 
-  /**
-   * Cherche tous les projets auxquels le collaborateur participe
-   * 
-   * @return Liste des projets auxquelq le collaborateur participe
-   * @throws ServletException
-   */
-/*  private ArrayList getProjet () throws ServletException
-  {
-    OQLQuery lRequete ; // Requête à réaliser sur la base
-    QueryResults lResultat ; // Résultat de la requête sur la base
-    ArrayList lListProjet = new ArrayList () ; // Liste de projet ayant pour collaborateur celui
-    // connecté
-    MCollaborateur lCollaborateur = getSession ().getCollaborateur () ; // Collaborateur connecté
-    MProjet lProjet ; // Projet enregistré
-
-    try
-    {
-      getBaseDonnees ().begin () ;
-
-      // Cherche tous les projets enregistré
-      lRequete = getBaseDonnees ()
-        .getOQLQuery ("select PROJET from owep.modele.execution.MProjet PROJET") ;
-      lResultat = lRequete.execute () ;
-
-      // Pour chaque projet présent dans la base de donnée, on cherche si le collaborateur connecté
-      // y participe
-      while (lResultat.hasMore ())
-      {
-        lProjet = (MProjet) lResultat.next () ;
-        ArrayList lListCollaborateur = lProjet.getListeCollaborateurs () ;
-        int i = 0 ;
-        for (i = 0 ; i < lListCollaborateur.size () ; i++)
-        {
-          // Si le collaborateur connecté participe à ce projet alors on ajoute le projet a la list
-          // retourné
-          if (lCollaborateur.getId () == ((MCollaborateur) lListCollaborateur.get (i)).getId ())
-          {
-            lListProjet.add (lProjet) ;
-            i = lListCollaborateur.size () ;
-          }
-        }
-      }
-
-      getBaseDonnees ().commit () ;
-
-      // La connexion à la base de données est fermé dans le finally de la fonction traiter
-    }
-    catch (PersistenceException e)
-    {
-      e.printStackTrace () ;
-      throw new ServletException (CConstante.EXC_TRAITEMENT) ;
-    }
-
-    return lListProjet ;
-
-  }*/
 }

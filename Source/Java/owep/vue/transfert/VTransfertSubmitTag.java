@@ -19,6 +19,7 @@ public class VTransfertSubmitTag extends TagSupport
   private String  mValeur ;       // Valeur renvoyée par le bouton de soumission.
   private boolean mVerification ; // Indique si la vérification de champ doit être réalisée.
   private String  mValidation ;   // Code javascript de validation.
+  private String  mAdditionnel ;   // Code javascript additionnel.
 
 
   /**
@@ -35,7 +36,6 @@ public class VTransfertSubmitTag extends TagSupport
     // Récupère l'arbre principal de transfert.
     ArrayList   lListeArbres  = (ArrayList) pageContext.getAttribute (VTransfertConstante.TRANSFERT_LISTEARBRES, PageContext.REQUEST_SCOPE) ;
     VArbreBeans lArbreCourant = (VArbreBeans) lListeArbres.get (0) ;
-    String      lGestionnaire = "" ;
     
     try
     {
@@ -61,12 +61,12 @@ public class VTransfertSubmitTag extends TagSupport
       {
         pageContext.getOut ().print ("<input class='bouton' type=\"button\" value=\"" + mLibelle + "\" " + 
                                      "onclick=\"" + VTransfertConstante.TRANSFERT_SOUMISSION + ".value='" + mValeur + "' ;\n" +  
-                                     mValidation + "\">") ;
+                                     mValidation + "\"" + mAdditionnel + ">") ;
       }
       else
       {
         pageContext.getOut ().print ("<input class='bouton' type=\"button\" value=\"" + mLibelle + "\" " + 
-                                     "onclick=\"document.forms[0].submit () ;\">") ;
+                                     "onclick=\"document." + CConstante.PAR_FORMULAIRE + ".submit () ;\">") ;
       }
       pageContext.getOut ().flush () ;
     }
@@ -104,14 +104,14 @@ public class VTransfertSubmitTag extends TagSupport
         // Ajoute la fonction de vérifiaction de champ vide si nécessaire.
         if (pArbre.getAssociation (i).isObligatoire ())
         {
-          lGestionnaireValidation += "if (! isVide (document.forms[0]." +
+          lGestionnaireValidation += "if (! isVide (document." + CConstante.PAR_FORMULAIRE + "." +
                                      pArbre.getAssociation (i).getChamp () + ".value, '" +
                                      pArbre.getAssociation (i).getLibelle () + "')) {\n" ;
         }
         if (! lFonctionValidation.equals (""))
         {
           // Ajoute la fonction de vérification du champ courant au gestionnaire d'évenement.
-          lGestionnaireValidation += lFonctionValidation + " (document.forms[0]." +
+          lGestionnaireValidation += lFonctionValidation + " (document." + CConstante.PAR_FORMULAIRE + "." +
                                     pArbre.getAssociation (i).getChamp () + ".value, '" +
                                     pArbre.getAssociation (i).getLibelle () + "') ;\n" ;
         }
@@ -136,6 +136,26 @@ public class VTransfertSubmitTag extends TagSupport
     
     // Retourne le gestionnaire d'évenement.
     return lGestionnaireValidation ;
+  }
+
+
+  /**
+   * Récupère le code additionnel javascript pour le bouton.
+   * @return Code additionnel (pour ajouter de nouveaux évenements par exemple).
+   */
+  public String getAdditionnel ()
+  {
+    return mAdditionnel ;
+  }
+
+
+  /**
+   * Initialise le code additionnel javascript pour le bouton.
+   * @param pAdditionnel Code additionnel (pour ajouter de nouveaux évenements par exemple).
+   */
+  public void setAdditionnel (String pAdditionnel)
+  {
+    mAdditionnel = pAdditionnel ;
   }
 
 

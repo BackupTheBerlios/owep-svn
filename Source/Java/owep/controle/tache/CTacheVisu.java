@@ -15,6 +15,7 @@ import org.exolab.castor.jdo.QueryResults;
 import owep.controle.CConstante;
 import owep.controle.CControleurBase;
 import owep.modele.execution.MTache;
+import owep.modele.execution.MTacheImprevue;
 
 /**
  * @author Emmanuelle et Rémi
@@ -24,7 +25,7 @@ import owep.modele.execution.MTache;
  */
 public class CTacheVisu extends CControleurBase{
     private MTache mTache ; // Tache à visualiser
-    
+    private MTacheImprevue mTacheImprevue ; // Tache Imprévue à visualiser
     
     /**
      * Récupère les données nécessaire au controleur dans la base de données. 
@@ -40,16 +41,28 @@ public class CTacheVisu extends CControleurBase{
       {
         getBaseDonnees ().begin () ;
         
-        //récupération de l'id de la tache donc on veut afficher le détail
-        int idTache = Integer.parseInt(getRequete().getParameter(("pTacheAVisualiser")));
-        System.out.println(idTache);
-        // Récupère la tâche à visualiser.
-        lRequete = getBaseDonnees ().getOQLQuery ("select TACHE from owep.modele.execution.MTache TACHE where mId = $1") ;
-        lRequete.bind (idTache) ;
-        lResultat      = lRequete.execute () ;
-        mTache = (MTache) lResultat.next () ;
-        
-        getBaseDonnees ().commit () ;
+        if(getRequete().getParameter(("pTacheAVisualiser")) != null)
+        {
+          //récupération de l'id de la tache donc on veut afficher le détail
+          int idTache = Integer.parseInt(getRequete().getParameter(("pTacheAVisualiser")));
+          // Récupère la tâche à visualiser.
+          lRequete = getBaseDonnees ().getOQLQuery ("select TACHE from owep.modele.execution.MTache TACHE where mId = $1") ;
+          lRequete.bind (idTache) ;
+          lResultat      = lRequete.execute () ;
+          mTache = (MTache) lResultat.next () ;
+        }
+        //Tache imprévue
+        else
+        {
+          //récupération de l'id de la tache donc on veut afficher le détail
+          int idTache = Integer.parseInt(getRequete().getParameter(("pTacheImprevueAVisualiser")));
+          // Récupère la tâche à visualiser.
+          lRequete = getBaseDonnees ().getOQLQuery ("select TACHEIMPREVUE from owep.modele.execution.MTacheImprevue TACHEIMPREVUE where mId = $1") ;
+          lRequete.bind (idTache) ;
+          lResultat      = lRequete.execute () ;
+          mTacheImprevue = (MTacheImprevue) lResultat.next () ;
+        }
+
       }
       catch (Exception eException)
       {
@@ -61,7 +74,8 @@ public class CTacheVisu extends CControleurBase{
       {
         try
         {
-          getBaseDonnees ().close () ;
+        	getBaseDonnees ().commit () ;
+        	getBaseDonnees ().close () ;
         }
         catch (PersistenceException eException)
         {
@@ -90,8 +104,17 @@ public class CTacheVisu extends CControleurBase{
     public String traiter () throws ServletException
     {
       // Transmet les données à la JSP d'affichage.
-      getRequete ().setAttribute (CConstante.PAR_TACHE, mTache) ;
-      
+      if(getRequete().getParameter(("pTacheAVisualiser")) != null)
+      {
+        getRequete ().setAttribute (CConstante.PAR_TACHE, mTache) ;
+        getRequete ().setAttribute (CConstante.PAR_TACHE_IMPREVUE, null) ;
+      }
+      //Tache imprévue
+      else
+      {
+        getRequete ().setAttribute (CConstante.PAR_TACHE, null) ;
+        getRequete ().setAttribute (CConstante.PAR_TACHE_IMPREVUE, mTacheImprevue) ;        
+      }
       getRequete ().setAttribute (CConstante.SES_SESSION, getSession()) ;
       
       return "..\\JSP\\Tache\\TTacheVisu.jsp" ;

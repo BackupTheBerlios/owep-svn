@@ -46,6 +46,7 @@ public class MArtefact extends MModeleBase
     mDescription = pDescription ;
   }
 
+  
   /**
    * Insertion de l'artefact courant dans la base de données.
    * @param pConnection Connexion avec la base de données.
@@ -147,6 +148,7 @@ public class MArtefact extends MModeleBase
     Statement lRequest = pConnection.createStatement () ;
     lRequest.executeUpdate (lRequete) ;
   }
+  
   
   /**
    * Récupère le collaborateur responsable de l'artefact.

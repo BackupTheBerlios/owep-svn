@@ -13,6 +13,7 @@ import owep.controle.CControleurBase;
 import owep.infrastructure.Session;
 import owep.modele.execution.MCollaborateur;
 import owep.modele.execution.MTache;
+import owep.modele.execution.MTacheImprevue;
 
 
 /**
@@ -24,6 +25,7 @@ import owep.modele.execution.MTache;
 public class CValidationRapport extends CControleurBase{
   private int mIterationNum ;  // Numéro d'itération
   private MTache mTache ;      // Tache concernée par le changement d'état
+  private MTacheImprevue mTacheImprevue ; // Tache imprévue concernée par le changement d'état
   private MCollaborateur mCollaborateur ; // Collaborateur ayant ouvert la session
   private Session mSession ;              // Session associé à la connexion 
   private double tps ; //temps passé sur la tache
@@ -31,6 +33,7 @@ public class CValidationRapport extends CControleurBase{
   private int ET ; //etat de la tache
   private Date finReest ; //date de fin reestimee de la tache
   private Date debutReel ; //date de debut réelle de la tache
+  private String lTypeTache ; // type de la tache (tache imprevue ou tache)
   
   
   /**
@@ -59,21 +62,34 @@ public class CValidationRapport extends CControleurBase{
       lResultat      = lRequete.execute () ;
       mCollaborateur = (MCollaborateur) lResultat.next () ;
       
-      getBaseDonnees ().commit () ;
+      // récupération du type de la tâche
+      lTypeTache = (String)getRequete().getParameter(CConstante.PAR_TYPE_TACHE);
       
-      // récupération de l'id de la tache
-      int idTache = Integer.parseInt(getRequete().getParameter(CConstante.PAR_TACHE));
-      
-      getBaseDonnees ().begin () ;
-      
-      // Récupère la tâche
-      String req = "select TACHE from owep.modele.execution.MTache TACHE where mId = $1";
-      lRequete = getBaseDonnees ().getOQLQuery (req) ;
-      lRequete.bind (idTache) ;
-      lResultat      = lRequete.execute () ;
-      mTache = (MTache) lResultat.next () ;
+      if (lTypeTache.equals("tache"))
+      {
+	    // récupération de l'id de la tache
+	    int idTache = Integer.parseInt(getRequete().getParameter(CConstante.PAR_TACHE));
+	
+	    // Récupère la tâche
+	    String req = "select TACHE from owep.modele.execution.MTache TACHE where mId = $1";
+	    lRequete = getBaseDonnees ().getOQLQuery (req) ;
+	    lRequete.bind (idTache) ;
+	    lResultat      = lRequete.execute () ;
+	    mTache = (MTache) lResultat.next () ;
+      }
+      else if (lTypeTache.equals("tacheImprevue"))
+      {
+        // récupération de l'id de la tache imprevue
+	    int idTacheImprevue = Integer.parseInt(getRequete().getParameter(CConstante.PAR_TACHE));
+	
+	    // Récupère la tâche
+	    String req = "select TACHEIMPREVUE from owep.modele.execution.MTacheImprevue TACHEIMPREVUE where mId = $1";
+	    lRequete = getBaseDonnees ().getOQLQuery (req) ;
+	    lRequete.bind (idTacheImprevue) ;
+	    lResultat      = lRequete.execute () ;
+	    mTacheImprevue = (MTacheImprevue) lResultat.next () ;
+      }
 
-      getBaseDonnees ().commit () ;
     }
     catch (Exception eException)
     {
@@ -105,16 +121,6 @@ public class CValidationRapport extends CControleurBase{
 
       // récupération de la date de debut réelle
       debutReel = new SimpleDateFormat ("yyyy-MM-dd").parse(getRequete().getParameter(CConstante.PAR_DATEDEBUTREELLE));
-      
-      // Récupère le numéro d'itération.
-      if (getRequete ().getParameter (CConstante.PAR_ITERATION) == null)
-      {
-        mIterationNum = 1 ;
-      }
-      else
-      {
-        mIterationNum = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_ITERATION)) ;
-      }
     }
     catch (Exception eException)
     {
@@ -133,23 +139,45 @@ public class CValidationRapport extends CControleurBase{
    */
   public String traiter () throws ServletException
   {  
-    // mise à jour de la tâche avec les valeurs validées précédemment
-    mTache.setTempsPasse(tps) ;
-    mTache.setResteAPasser(rps) ; 
-    mTache.setEtat(ET) ; 
-    mTache.setDateFinReelle(finReest) ;
-    mTache.setDateDebutReelle(debutReel);
-    mTache.setDateDebutChrono(null) ;
-    // Le collaborateur n'a désormais plus de tâche en cours
-    mCollaborateur.setTacheEnCours(0) ;
-
+    String lMessage = "" ;
+    java.util.ResourceBundle messages;
+    messages = java.util.ResourceBundle.getBundle("MessagesBundle");
     try
     {
-      // Met à jour l'état de la tâche dans la base de données
-      getBaseDonnees ().begin () ;
-      getBaseDonnees ().update (mTache) ;
-      getBaseDonnees ().update (mCollaborateur) ;
-      getBaseDonnees ().commit () ; 
+      if (lTypeTache.equals("tache"))
+      {
+	    // mise à jour de la tâche avec les valeurs validées précédemment
+	    mTache.setTempsPasse(tps) ;
+	    mTache.setResteAPasser(rps) ; 
+	    mTache.setEtat(ET) ; 
+	    mTache.setDateFinReelle(finReest) ;
+	    mTache.setDateDebutReelle(debutReel);
+	    mTache.setDateDebutChrono(0) ;
+	    // Le collaborateur n'a désormais plus de tâche en cours
+	    mCollaborateur.setTacheEnCours(-1) ;
+        
+	    if (ET == 2)
+	      lMessage = messages.getString("cEtatTache")+" \""+mTache.getNom()+"\" "+messages.getString("cValidationRapportTacheSuspendue");
+	    else if (ET == 3)
+	      lMessage = messages.getString("cEtatTache")+" \""+mTache.getNom()+"\" "+messages.getString("cValidationRapportTacheTerminee");
+      }
+      else if (lTypeTache.equals("tacheImprevue"))
+      {
+        // mise à jour de la tâche avec les valeurs validées précédemment
+	    mTacheImprevue.setTempsPasse(tps) ;
+	    mTacheImprevue.setResteAPasser(rps) ; 
+	    mTacheImprevue.setEtat(ET) ; 
+	    mTacheImprevue.setDateFinReelle(finReest) ;
+	    mTacheImprevue.setDateDebutReelle(debutReel);
+	    mTacheImprevue.setDateDebutChrono(0) ;
+	    // Le collaborateur n'a désormais plus de tâche en cours
+	    mCollaborateur.setTacheEnCours(-1) ;
+	    
+	    if (ET == 2)
+	      lMessage = messages.getString("cEtatTacheImprevue")+" \""+mTacheImprevue.getNom()+"\" "+messages.getString("cValidationRapportTacheSuspendue");
+	    else if (ET == 3)
+	      lMessage = messages.getString("cEtatTacheImprevue")+" \""+mTacheImprevue.getNom()+"\" "+messages.getString("cValidationRapportTacheTerminee");
+      }
     }
     catch (Exception eException)
     {
@@ -161,6 +189,7 @@ public class CValidationRapport extends CControleurBase{
     {
       try
       {
+        getBaseDonnees ().commit () ;
         getBaseDonnees ().close () ;
       }
       catch (PersistenceException eException)
@@ -171,9 +200,7 @@ public class CValidationRapport extends CControleurBase{
     }
  
     // Transmet les données à la JSP d'affichage.
-    getRequete ().setAttribute (CConstante.PAR_ITERATION,     new Integer (mIterationNum)) ;
+    getRequete ().setAttribute (CConstante.PAR_MESSAGE, lMessage) ;
     return "ListeTacheVisu" ;
-          
-     
   }
 }

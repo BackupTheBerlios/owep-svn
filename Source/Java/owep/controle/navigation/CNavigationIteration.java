@@ -6,7 +6,7 @@
  */
 package owep.controle.navigation;
 
-import java.util.StringTokenizer;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import org.exolab.castor.jdo.OQLQuery;
@@ -16,6 +16,7 @@ import org.exolab.castor.jdo.QueryResults;
 import owep.controle.CConstante;
 import owep.controle.CControleurBase;
 import owep.modele.execution.MIteration;
+import owep.modele.execution.MProjet;
 
 /**
  * @author Victor Nancy
@@ -25,7 +26,8 @@ import owep.modele.execution.MIteration;
  */
 public class CNavigationIteration extends CControleurBase
 {   
-    
+  	private ArrayList lListeIteration;  
+  
     /**
      * Récupère les données nécessaire au controleur dans la base de données. 
      * @throws ServletException Si une erreur survient durant la connexion
@@ -37,7 +39,6 @@ public class CNavigationIteration extends CControleurBase
       QueryResults   lResultat ;      // Résultat de la requête sur la base
       
       int idIteration = Integer.parseInt(getRequete().getParameter(CConstante.PAR_ITERATION));
-      System.out.println (idIteration ) ;
       try
       {
         getBaseDonnees ().begin () ;
@@ -49,6 +50,14 @@ public class CNavigationIteration extends CControleurBase
 
         MIteration lIteration = (MIteration) lResultat.next () ;
 
+        lRequete = getBaseDonnees ()
+        .getOQLQuery ("select PROJET from owep.modele.execution.MProjet PROJET where mId = $1") ;
+        lRequete.bind (getSession().getProjet().getId()) ;
+        lResultat = lRequete.execute () ;
+
+        MProjet lProjet = (MProjet) lResultat.next () ;
+        lListeIteration = lProjet.getListeIterations() ;
+        
         getBaseDonnees ().commit () ;
 
         // Enregistre l'itération à ouvrir dans la session
@@ -58,6 +67,19 @@ public class CNavigationIteration extends CControleurBase
       {
         // TODO Auto-generated catch block
         e1.printStackTrace();
+      }
+      // Ferme la connexion à la base de données.
+      finally
+      {
+        try
+        {
+          getBaseDonnees ().close () ;
+        }
+        catch (PersistenceException eException)
+        {
+          eException.printStackTrace () ;
+          throw new ServletException (CConstante.EXC_DECONNEXION) ;
+        }
       }
 
     }
@@ -81,31 +103,8 @@ public class CNavigationIteration extends CControleurBase
      * @see owep.controle.CControleurBase#traiter()
      */
     public String traiter () throws ServletException
-    {  
-      // Transmet les données à la JSP d'affichage.
-      
-      /*//Recherche de l'url d'origine pour retourner à la bonne page
-      String pageOrigine="/"; //url recherchée 
-      boolean debutPageOrigine=false; //qd true alors on lit les composant de l'url
-      int i=0;
-      
-      //On récupère l'url dans la requete; chaque élément de l'url est séparé par %2F
-      StringTokenizer st = new StringTokenizer(getRequete().getParameter("url"),"%2F");// séparateur %2F
-     
-      //On parcourt les éléments de l'url et on les récupère à partir d'owep.
-      while (st.hasMoreTokens()){  //boucle de lecture
-        
-        if(debutPageOrigine)
-          pageOrigine += "/" + st.nextToken();
-        
-        if(st.nextToken() == "owep")
-          debutPageOrigine=true;
-        
-        i++;
-      }
-    return pageOrigine;  */
-      return "/Tache/ListeTacheVisu";
+    { 
+      getRequete ().setAttribute (CConstante.PAR_LISTEITERATIONS, lListeIteration) ;
+      return getSession().getURLPagePrecedente();
     }
-
-  
 }

@@ -2,8 +2,10 @@ package owep.modele.processus ;
 
 
 import java.util.ArrayList ;
+import java.util.Iterator ;
+
 import owep.modele.MModeleBase ;
-import owep.modele.execution.MArtefact;
+import owep.modele.execution.MArtefact ;
 
 
 /**
@@ -13,14 +15,15 @@ import owep.modele.execution.MArtefact;
  */
 public class MProduit extends MModeleBase
 {
-  private int        mId ;               // Identifie le produit de manière unique.
-  private String     mNom ;              // Nom désignant le produit.
-  private String     mDescription ;      // Description du produit.
+  private int        mId ;              // Identifie le produit de manière unique.
+  private String     mNom ;             // Nom désignant le produit.
+  private String     mDescription ;     // Description du produit.
   private ArrayList  mActivitesEntrees ; // Liste des activités qui nécessite le produit.
   private ArrayList  mActivitesSorties ; // Liste des activités qui réalisant le produit.
-  private ArrayList  mArtefacts ;        // Liste des artefacts qui instancie le produit.
-  private MComposant mComposant ;        // Composant incluant le produit.
-  private MRole      mResponsable ;      // Rôle responsable du produit.
+  private ArrayList  mArtefacts ;       // Liste des artefacts qui instancie le produit.
+  private MComposant mComposant ;       // Composant incluant le produit.
+  private MRole      mResponsable ;     // Rôle responsable du produit.
+  private String     mIdDpe ;           // Identifiant du dpe
 
 
   /**
@@ -29,14 +32,29 @@ public class MProduit extends MModeleBase
   public MProduit ()
   {
     super () ;
-    
+
     mActivitesEntrees = new ArrayList () ;
     mActivitesSorties = new ArrayList () ;
+    mArtefacts = new ArrayList () ;
   }
 
+  /**
+   * Construit une instance de MProduit avec l'id.
+   */
+  public MProduit (int pId)
+  {
+    super () ;
+    
+    mId = pId;
+
+    mActivitesEntrees = new ArrayList () ;
+    mActivitesSorties = new ArrayList () ;
+    mArtefacts = new ArrayList () ;
+  }
 
   /**
    * Construit une instance initialisée de MProduit.
+   * 
    * @param pId Identifiant unique du produit.
    * @param pNom Nom désignant le produit.
    * @param pDescription Description du produit.
@@ -45,18 +63,19 @@ public class MProduit extends MModeleBase
   public MProduit (int pId, String pNom, String pDescription, MComposant pComposant)
   {
     super () ;
-    mId          = pId ;
-    mNom         = pNom ;
+    mId = pId ;
+    mNom = pNom ;
     mDescription = pDescription ;
-    mComposant   = pComposant ;
-    
+    mComposant = pComposant ;
+
     mActivitesEntrees = new ArrayList () ;
     mActivitesSorties = new ArrayList () ;
+    mArtefacts = new ArrayList () ;
   }
-
 
   /**
    * Récupère la liste des activités en entrées.
+   * 
    * @return Liste des activités qui nécessite le produit.
    */
   public ArrayList getListeActivitesEntrees ()
@@ -64,19 +83,30 @@ public class MProduit extends MModeleBase
     return mActivitesEntrees ;
   }
 
-
   /**
    * Initialise la liste des activités en entrées.
+   * 
    * @param pActivitesEntrees Liste des activités qui nécessite le produit.
    */
   public void setListeActivitesEntrees (ArrayList pActivitesEntrees)
   {
     mActivitesEntrees = pActivitesEntrees ;
+    Iterator it = pActivitesEntrees.iterator () ;
+    MActivite lActivite ;
+    while (it.hasNext ())
+    {
+      lActivite = (MActivite) it.next () ;
+      ArrayList lListProduit = lActivite.getListeProduitsSorties () ;
+      if (!lListProduit.contains (this))
+      {
+        lActivite.addProduitSortie (this) ;
+      }
+    }
   }
-
 
   /**
    * Récupère le nombre des activités pour lesquelles le produit est en entrée.
+   * 
    * @return Nombre des activités qui nécessite le produit.
    */
   public int getNbActivitesEntrees ()
@@ -84,9 +114,9 @@ public class MProduit extends MModeleBase
     return mActivitesEntrees.size () ;
   }
 
-
   /**
    * Récupère l'activité d'indice spécifié pour laquelle le produit est en entrée.
+   * 
    * @param pIndice Indice de l'activité qui nécessite le produit.
    * @return Activité qui nécessite le produit.
    */
@@ -95,19 +125,27 @@ public class MProduit extends MModeleBase
     return (MActivite) mActivitesEntrees.get (pIndice) ;
   }
 
-
   /**
    * Ajoute l'activité spécifié en entrée.
+   * 
    * @param pActivite Activité qui nécessite le produit.
    */
   public void addActiviteEntree (MActivite pActivite)
   {
-    mActivitesEntrees.add (pActivite) ;
+    if (!mActivitesEntrees.contains (pActivite))
+    {
+      mActivitesEntrees.add (pActivite) ;
+    }
+    ArrayList lListProduit = pActivite.getListeProduitsSorties () ;
+    if (!lListProduit.contains (this))
+    {
+      pActivite.addProduitSortie (this) ;
+    }
   }
 
-
- /**
+  /**
    * Récupère la liste des activités en sorties.
+   * 
    * @return Liste des activités qui réalisent le produit.
    */
   public ArrayList getListeActivitesSorties ()
@@ -115,50 +153,69 @@ public class MProduit extends MModeleBase
     return mActivitesSorties ;
   }
 
-
   /**
    * Initialise la liste des activités en sorties.
+   * 
    * @param pActivitesSorties Liste des activités qui réalisent le produit.
    */
   public void setListeActivitesSorties (ArrayList pActivitesSorties)
   {
     mActivitesSorties = pActivitesSorties ;
+    Iterator it = pActivitesSorties.iterator () ;
+    MActivite lActivite ;
+    while (it.hasNext ())
+    {
+      lActivite = (MActivite) it.next () ;
+      ArrayList lListProduit = lActivite.getListeProduitsEntrees () ;
+      if (!lListProduit.contains (this))
+      {
+        lActivite.addProduitEntree (this) ;
+      }
+    }
   }
-
 
   /**
    * Récupère le nombre des activités pour lesquelles le produit est en sortie.
+   * 
    * @return Nombre des activités qui réalisent le produit.
    */
   public int getNbActivitesSorties ()
   {
-    return mActivitesEntrees.size () ;
+    return mActivitesSorties.size () ;
   }
-
 
   /**
    * Récupère l'activité d'indice spécifié pour laquelle le produit est en sortie.
+   * 
    * @param pIndice Indice de l'activité dans la liste.
    * @return Activité qui réalise le produit.
    */
   public MActivite getActiviteSortie (int pIndice)
   {
-    return (MActivite) mActivitesEntrees.get (pIndice) ;
+    return (MActivite) mActivitesSorties.get (pIndice) ;
   }
-
 
   /**
    * Ajoute l'activité spécifié en sortie.
+   * 
    * @param pActivite Activité qui réalise le produit.
    */
   public void addActiviteSortie (MActivite pActivite)
   {
-    mActivitesEntrees.add (pActivite) ;
+    if (!mActivitesSorties.contains (pActivite))
+    {
+      mActivitesSorties.add (pActivite) ;
+    }
+    ArrayList lListProduit = pActivite.getListeProduitsEntrees () ;
+    if (!lListProduit.contains (this))
+    {
+      pActivite.addProduitEntree (this) ;
+    }
   }
-
 
   /**
    * Récupère le composant incluant le produit.
+   * 
    * @return Composant incluant le produit.
    */
   public MComposant getComposant ()
@@ -166,19 +223,27 @@ public class MProduit extends MModeleBase
     return mComposant ;
   }
 
-
   /**
    * Associe le composant incluant le produit.
+   * 
    * @param pComposant Composant incluant le produit.
    */
   public void setComposant (MComposant pComposant)
   {
     mComposant = pComposant ;
+    if (pComposant != null)
+    {
+      ArrayList lListProduit = pComposant.getListeProduits () ;
+      if (!lListProduit.contains (this))
+      {
+        pComposant.addProduit (this) ;
+      }
+    }
   }
-
 
   /**
    * Récupère la description du produit.
+   * 
    * @return Description du produit.
    */
   public String getDescription ()
@@ -186,9 +251,9 @@ public class MProduit extends MModeleBase
     return mDescription ;
   }
 
-
   /**
    * Initialise la description du produit.
+   * 
    * @param pDescription Description du produit.
    */
   public void setDescription (String pDescription)
@@ -196,9 +261,9 @@ public class MProduit extends MModeleBase
     mDescription = pDescription ;
   }
 
-
   /**
    * Récupère l'identifiant du produit.
+   * 
    * @return Identifiant unique du produit.
    */
   public int getId ()
@@ -206,9 +271,9 @@ public class MProduit extends MModeleBase
     return mId ;
   }
 
-
   /**
    * Initialise l'identifiant du produit.
+   * 
    * @param pId Identifiant unique du produit.
    */
   public void setId (int pId)
@@ -216,9 +281,9 @@ public class MProduit extends MModeleBase
     mId = pId ;
   }
 
-
   /**
    * Récupère le nom du produit.
+   * 
    * @return Nom désignant le produit.
    */
   public String getNom ()
@@ -226,19 +291,19 @@ public class MProduit extends MModeleBase
     return mNom ;
   }
 
-
   /**
    * Initialise le nom du produit.
+   * 
    * @param pNom Nom désignant le produit.
    */
   public void setNom (String pNom)
   {
     mNom = pNom ;
   }
-  
-  
+
   /**
    * Récupère la liste des artefacts qui instancie le produit.
+   * 
    * @return Liste des artefacts qui instancie le produit.
    */
   public ArrayList getListeArtefacts ()
@@ -246,19 +311,30 @@ public class MProduit extends MModeleBase
     return mArtefacts ;
   }
 
-
   /**
    * Initialise la liste des artefacts qui instancie le produit.
+   * 
    * @param pArtefacts Liste des artefacts qui instancie le produit.
    */
   public void setListeArtefacts (ArrayList pArtefacts)
   {
     mArtefacts = pArtefacts ;
+    Iterator it = pArtefacts.iterator () ;
+    MArtefact lArtefact ;
+    while (it.hasNext ())
+    {
+      lArtefact = (MArtefact) it.next () ;
+      MProduit lProduit = lArtefact.getProduit () ;
+      if (lProduit != this)
+      {
+        lArtefact.setProduit (this) ;
+      }
+    }
   }
-
 
   /**
    * Récupère le nombre des artefacts qui instancie le produit.
+   * 
    * @return Nombre des artefacts qui instancie le produit.
    */
   public int getNbArtefacts ()
@@ -266,9 +342,9 @@ public class MProduit extends MModeleBase
     return mArtefacts.size () ;
   }
 
-
   /**
    * Récupère l'artefact d'indice spécifié qui instancie le produit.
+   * 
    * @param pIndice Indice de l'artefact dans la liste.
    * @return Artefact qui instancie le produit.
    */
@@ -277,19 +353,27 @@ public class MProduit extends MModeleBase
     return (MArtefact) mArtefacts.get (pIndice) ;
   }
 
-
   /**
    * Ajoute l'artefact spécifié qui instancie le produit.
+   * 
    * @param pArtefact Artefact qui instancie le produit.
    */
   public void addArtefact (MArtefact pArtefact)
   {
-    mArtefacts.add (pArtefact) ;
+    if (!mArtefacts.contains (this))
+    {
+      mArtefacts.add (pArtefact) ;
+    }
+    MProduit lProduit = pArtefact.getProduit () ;
+    if (lProduit != this)
+    {
+      pArtefact.setProduit (this) ;
+    }
   }
-
 
   /**
    * Supprime l'artefact spécifié qui instancie le produit.
+   * 
    * @param pArtefact Artefact qui instancie le produit.
    */
   public void supprimerArtefact (MArtefact pArtefact)
@@ -297,23 +381,51 @@ public class MProduit extends MModeleBase
     mArtefacts.remove (pArtefact) ;
   }
 
-
   /**
    * Récupère le rôle responsable du produit.
+   * 
    * @return Rôle responsable du produit.
    */
   public MRole getResponsable ()
   {
     return mResponsable ;
   }
-  
-  
+
   /**
    * Initialise le rôle responsable du produit.
+   * 
    * @param pResponsable Rôle responsable du produit.
    */
   public void setResponsable (MRole pResponsable)
   {
     mResponsable = pResponsable ;
+    if (pResponsable != null)
+    {
+      ArrayList lListProduit = pResponsable.getListeProduits () ;
+      if (!lListProduit.contains (this))
+      {
+        pResponsable.addProduit (this) ;
+      }
+    }
+  }
+
+  /**
+   * Récupère l'identifiant du DPE.
+   * 
+   * @return Retourne la valeur de l'attribut idDpe.
+   */
+  public String getIdDpe ()
+  {
+    return mIdDpe ;
+  }
+
+  /**
+   * Initialisation avec l'identifiant du DPE
+   * 
+   * @param initialse idDpe avec pIdDpe.
+   */
+  public void setIdDpe (String pIdDpe)
+  {
+    mIdDpe = pIdDpe ;
   }
 }

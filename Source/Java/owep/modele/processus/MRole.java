@@ -2,8 +2,10 @@ package owep.modele.processus ;
 
 
 import java.util.ArrayList ;
+import java.util.Iterator ;
+
 import owep.modele.MModeleBase ;
-import owep.modele.execution.MCollaborateur;
+import owep.modele.execution.MCollaborateur ;
 
 
 /**
@@ -12,13 +14,14 @@ import owep.modele.execution.MCollaborateur;
  */
 public class MRole extends MModeleBase
 {
-  private int        mId ;             // Identifie le rôle de manière unique.
-  private String     mNom ;            // Nom désignant le rôle.
-  private String     mDescription ;    // Description du rôle.
-  private ArrayList  mActivites ;      // Liste des activités auxquelles participent le rôle.
-  private ArrayList  mProduits ;       // Liste des produits dont est responsable le rôle.
+  private int        mId ;            // Identifie le rôle de manière unique.
+  private String     mNom ;           // Nom désignant le rôle.
+  private String     mDescription ;   // Description du rôle.
+  private ArrayList  mActivites ;     // Liste des activités auxquelles participent le rôle.
+  private ArrayList  mProduits ;      // Liste des produits dont est responsable le rôle.
   private ArrayList  mCollaborateurs ; // Liste des collaborateurs qui tiennent le rôle.
-  private MComposant mComposant ;      // Composant incluant le rôle.
+  private MComposant mComposant ;     // Composant incluant le rôle.
+  private String     mIdDpe ;         // Identifiant du dpe
 
 
   /**
@@ -27,14 +30,29 @@ public class MRole extends MModeleBase
   public MRole ()
   {
     super () ;
-    
+
     mActivites = new ArrayList () ;
-    mProduits  = new ArrayList () ;
+    mProduits = new ArrayList () ;
+    mCollaborateurs = new ArrayList () ;
   }
 
+  /**
+   * Construit une instance de MRole avec l'id.
+   */
+  public MRole (int pId)
+  {
+    super () ;
+
+    mId = pId ;
+
+    mActivites = new ArrayList () ;
+    mProduits = new ArrayList () ;
+    mCollaborateurs = new ArrayList () ;
+  }
 
   /**
    * Construit une nouvelle instance de MRole.
+   * 
    * @param pId Identifiant unique rôle.
    * @param pNom Nom désignant le rôle.
    * @param pDescription Description du rôle.
@@ -43,19 +61,20 @@ public class MRole extends MModeleBase
   public MRole (int pId, String pNom, String pDescription, MComposant pComposant)
   {
     super () ;
-    
-    mId          = pId ;
-    mNom         = pNom ;
-    mDescription = pDescription ;
-    mComposant   = pComposant ;
-    
-    mActivites = new ArrayList () ;
-    mProduits  = new ArrayList () ;
-  }
 
+    mId = pId ;
+    mNom = pNom ;
+    mDescription = pDescription ;
+    mComposant = pComposant ;
+
+    mActivites = new ArrayList () ;
+    mProduits = new ArrayList () ;
+    mCollaborateurs = new ArrayList () ;
+  }
 
   /**
    * Récupère la liste des activités auxquelles participent le rôle.
+   * 
    * @return Liste des activités auxquelles participent le rôle.
    */
   public ArrayList getListeActivites ()
@@ -63,19 +82,30 @@ public class MRole extends MModeleBase
     return mActivites ;
   }
 
-
   /**
    * Initialise la liste des activités auxquelles participent le rôle.
+   * 
    * @param pActivites Liste des activités auxquelles participent le rôle.
    */
   public void setListeActivites (ArrayList pActivites)
   {
     mActivites = pActivites ;
+    Iterator it = pActivites.iterator () ;
+    MActivite lActivite ;
+    while (it.hasNext ())
+    {
+      lActivite = (MActivite) it.next () ;
+      ArrayList lListRole = lActivite.getListeRoles () ;
+      if (!lListRole.contains (this))
+      {
+        lActivite.addRole (this) ;
+      }
+    }
   }
-
 
   /**
    * Récupère le nombre d'activités auxquelles participent le rôle.
+   * 
    * @return Nombre d'activités auxquelles participent le rôle.
    */
   public int getNbActivites ()
@@ -83,9 +113,9 @@ public class MRole extends MModeleBase
     return mActivites.size () ;
   }
 
-
   /**
    * Récupère l'activité d'indice spécifié à laquelle participent le rôle.
+   * 
    * @param pIndice Indice de l'activité dans la liste.
    */
   public void getActivite (int pIndice)
@@ -93,19 +123,27 @@ public class MRole extends MModeleBase
     mActivites.get (pIndice) ;
   }
 
-
   /**
    * Ajoute l'activité spécifié au rôle.
+   * 
    * @param pActivite Activité à laquelle participe le rôle.
    */
   public void addActivite (MActivite pActivite)
   {
-    mActivites.add (pActivite) ;
+    if (!mActivites.contains (pActivite))
+    {
+      mActivites.add (pActivite) ;
+    }
+    ArrayList lListRole = pActivite.getListeRoles () ;
+    if (!lListRole.contains (this))
+    {
+      pActivite.addRole (this) ;
+    }
   }
-
 
   /**
    * Récupère la liste des collaborateurs qui tiennent le rôle.
+   * 
    * @return Liste des collaborateurs qui tiennent le rôle.
    */
   public ArrayList getListeCollaborateurs ()
@@ -113,19 +151,30 @@ public class MRole extends MModeleBase
     return mCollaborateurs ;
   }
 
-
   /**
    * Initialise la liste des collaborateurs qui tiennent le rôle.
+   * 
    * @param pCollaborateurs Liste des collaborateurs qui tiennent le rôle.
    */
   public void setListeCollaborateurs (ArrayList pCollaborateurs)
   {
     mCollaborateurs = pCollaborateurs ;
+    Iterator it = pCollaborateurs.iterator () ;
+    MCollaborateur lCollaborateur ;
+    while (it.hasNext ())
+    {
+      lCollaborateur = (MCollaborateur) it.next () ;
+      ArrayList lListRole = lCollaborateur.getListeRoles () ;
+      if (!lListRole.contains (this))
+      {
+        lCollaborateur.addRole (this) ;
+      }
+    }
   }
-
 
   /**
    * Récupère le nombre de collaborateurs qui tiennent le rôle.
+   * 
    * @return Nombre de collaborateurs qui tiennent le rôle.
    */
   public int getNbCollaborateurs ()
@@ -133,9 +182,9 @@ public class MRole extends MModeleBase
     return mCollaborateurs.size () ;
   }
 
-
   /**
    * Récupère le collaborateur d'indice spécifié qui tient le rôle.
+   * 
    * @param pIndice Indice du collaborateur dans la liste.
    */
   public MCollaborateur getCollaborateur (int pIndice)
@@ -143,30 +192,37 @@ public class MRole extends MModeleBase
     return (MCollaborateur) mCollaborateurs.get (pIndice) ;
   }
 
-
   /**
    * Ajoute le collaborateur spécifié pour ce rôle.
+   * 
    * @param pCollaborateur Collaborateur qui tient le rôle.
    */
   public void addCollaborateur (MCollaborateur pCollaborateur)
   {
-    mCollaborateurs.add (pCollaborateur) ;
+    if (!mCollaborateurs.contains (pCollaborateur))
+    {
+      mCollaborateurs.add (pCollaborateur) ;
+    }
+    ArrayList lListRole = pCollaborateur.getListeRoles () ;
+    if (!lListRole.contains (this))
+    {
+      pCollaborateur.addRole (this) ;
+    }
   }
-
 
   /**
    * Récupère l'activité d'indice spécifié à laquelle participe le rôle.
+   * 
    * @param pIndice Indice de l'activité dans la liste.
    * @return Activité à laquelle participe le rôle.
    */
-  public MActivite getComposant (int pIndice)
-  {
-    return (MActivite) mActivites.get (pIndice) ;
-  }
-
+  /*
+   * public MActivite getComposant (int pIndice) { return (MActivite) mActivites.get (pIndice) ; }
+   */
 
   /**
    * Récupère le composant incluant le rôle.
+   * 
    * @return Composant incluant le rôle.
    */
   public MComposant getComposant ()
@@ -174,19 +230,27 @@ public class MRole extends MModeleBase
     return mComposant ;
   }
 
-
   /**
    * Associe le composant incluant le rôle.
+   * 
    * @param pComposant Composant incluant le rôle.
    */
   public void setComposant (MComposant pComposant)
   {
     mComposant = pComposant ;
+    if (pComposant != null)
+    {
+      ArrayList lListRole = pComposant.getListeRoles () ;
+      if (!lListRole.contains (this))
+      {
+        pComposant.addRole (this) ;
+      }
+    }
   }
-
 
   /**
    * Récupère la description du rôle.
+   * 
    * @return Description du rôle.
    */
   public String getDescription ()
@@ -194,9 +258,9 @@ public class MRole extends MModeleBase
     return mDescription ;
   }
 
-
   /**
    * Initialise la description du rôle.
+   * 
    * @param pDescription Description du rôle.
    */
   public void setDescription (String pDescription)
@@ -204,9 +268,9 @@ public class MRole extends MModeleBase
     mDescription = pDescription ;
   }
 
-
   /**
    * Récupère l'identifiant du rôle.
+   * 
    * @return Identifiant unique du rôle.
    */
   public int getId ()
@@ -214,9 +278,9 @@ public class MRole extends MModeleBase
     return mId ;
   }
 
-
   /**
    * Initialise l'identifiant du rôle.
+   * 
    * @param pId Identifiant unique du rôle.
    */
   public void setId (int pId)
@@ -224,9 +288,9 @@ public class MRole extends MModeleBase
     mId = pId ;
   }
 
-
   /**
    * Récupère le nom du rôle.
+   * 
    * @return Nom désignant le rôle.
    */
   public String getNom ()
@@ -234,9 +298,9 @@ public class MRole extends MModeleBase
     return mNom ;
   }
 
-
   /**
    * Initialise le nom du rôle.
+   * 
    * @param pNom Nom désignant le rôle.
    */
   public void setNom (String pNom)
@@ -244,9 +308,9 @@ public class MRole extends MModeleBase
     mNom = pNom ;
   }
 
-
   /**
    * Récupère la liste des produits dont est responsable le rôle.
+   * 
    * @return Liste des produits dont est responsable le rôle.
    */
   public ArrayList getListeProduits ()
@@ -254,19 +318,33 @@ public class MRole extends MModeleBase
     return mProduits ;
   }
 
-
   /**
    * Initialise la liste des produits dont est responsable le rôle.
+   * 
    * @param pProduits Liste des produits dont est responsable le rôle.
    */
   public void setListeProduits (ArrayList pProduits)
   {
     mProduits = pProduits ;
+    Iterator it = pProduits.iterator () ;
+    MProduit lProduit ;
+    while (it.hasNext ())
+    {
+      lProduit = (MProduit) it.next () ;
+      if (lProduit != null)
+      {
+        MRole lRole = lProduit.getResponsable () ;
+        if (lRole != this)
+        {
+          lProduit.setResponsable (this) ;
+        }
+      }
+    }
   }
-
 
   /**
    * Récupère le nombre des produits dont est responsable le rôle.
+   * 
    * @return Nombre des produits dont est responsable le rôle.
    */
   public int getNbProduits ()
@@ -274,9 +352,9 @@ public class MRole extends MModeleBase
     return mProduits.size () ;
   }
 
-
   /**
    * Récupère le produit d'indice spécifié dont est responsable le rôle.
+   * 
    * @param pIndice Indice du produit dans la liste.
    * @return Produit dont est responsable le rôle.
    */
@@ -285,13 +363,44 @@ public class MRole extends MModeleBase
     return (MProduit) mProduits.get (pIndice) ;
   }
 
-
   /**
    * Ajoute le produit spécifié au le rôle.
+   * 
    * @param pProduit roduit dont est responsable le rôle.
    */
   public void addProduit (MProduit pProduit)
   {
-    mProduits.add (pProduit) ;
+    if (!mProduits.contains (pProduit))
+    {
+      mProduits.add (pProduit) ;
+    }
+    if (pProduit != null)
+    {
+      MRole lRole = pProduit.getResponsable () ;
+      if (lRole != this)
+      {
+        pProduit.setResponsable (this) ;
+      }
+    }
+  }
+
+  /**
+   * Recupère l'identifiant du DPE.
+   * 
+   * @return Retourne la valeur de l'attribut idDpe.
+   */
+  public String getIdDpe ()
+  {
+    return mIdDpe ;
+  }
+
+  /**
+   * Initialisation avec l'identifiant de DPE.
+   * 
+   * @param Initialse idDpe avec pIdDpe.
+   */
+  public void setIdDpe (String pIdDpe)
+  {
+    mIdDpe = pIdDpe ;
   }
 }

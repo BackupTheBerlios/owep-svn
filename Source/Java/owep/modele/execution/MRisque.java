@@ -9,13 +9,14 @@ import owep.modele.MModeleBase ;
  */
 public class MRisque extends MModeleBase
 {
-  private int     mId ;          // Id du risque
-  private String  mNom ;         // Nom du risque
-  private String  mDescription ; // Description du risque
-  private int     mPriorite ;    // Priorité du risque
-  private String  mImpact ;      // Impact du risque
-  private String  mEtat ;        // Etat du risque
-  private MProjet mProjet ;      // Projet auquel le risque est associé
+  private int     mId ;          // Id du risque.
+  private String  mNom ;         // Nom du risque.
+  private String  mDescription ; // Description du risque.
+  private int     mPriorite ;    // Priorité du risque.
+  private String  mImpact ;      // Impact du risque.
+  private String  mActions ;     // Actions pour résoudre le risque.
+  private String  mEtat ;        // Etat du risque.
+  private MProjet mProjet ;      // Projet auquel le risque est associé.
 
 
   /**
@@ -45,6 +46,26 @@ public class MRisque extends MModeleBase
     mDescription = pDescription ;
   }
 
+  /**
+   * Récupère la description des actions de résolution du risque.
+   * @return Description des actions de résolution du risque.
+   */
+  public String getActions ()
+  {
+    return mActions ;
+  }
+  
+  
+  /**
+   * Initialise la description des actions de résolution du risque.
+   * @param pActions Description des actions de résolution du risque.
+   */
+  public void setActions (String pActions)
+  {
+    mActions = pActions ;
+  }
+  
+  
   /**
    * Récupère l'état du risque.
    * 

@@ -18,7 +18,7 @@ import org.exolab.castor.jdo.QueryResults ;
 import owep.controle.CConstante ;
 import owep.infrastructure.Session ;
 import owep.infrastructure.localisation.LocalisateurIdentifiant ;
-import owep.modele.configuration.MConfiguration;
+import owep.modele.configuration.MConfigurationSite;
 import owep.modele.execution.MCollaborateur ;
 
 
@@ -35,7 +35,7 @@ public class CConnexion extends HttpServlet
   private String mLogin = null ; // Login saisi
   private String mPassword = null ; // mot de passe saisi
   // configuration
-  private MConfiguration mConfiguration = null ; //éléments de configuration
+  private MConfigurationSite mConfiguration = null ; //éléments de configuration
 
   /**
    * Appellé lors d'une requête d'un client. Redirige le client vers la page retourné par la méthode
@@ -74,7 +74,7 @@ public class CConnexion extends HttpServlet
     // Initie la connexion à la base de données.
     try
     {
-      JDO.loadConfiguration (LocalisateurIdentifiant.LID_BDCONFIGURATION) ;
+      JDO.loadConfiguration (getServletContext ().getRealPath ("/")+LocalisateurIdentifiant.LID_BDCONFIGURATION) ;
       lJdo = new JDO (LocalisateurIdentifiant.LID_BDNOM) ;
       mBaseDonnees = lJdo.getDatabase () ;
       mBaseDonnees.setAutoStore (false) ;
@@ -154,13 +154,13 @@ public class CConnexion extends HttpServlet
       // Récupère les éléments de configuration
       lRequete = getBaseDonnees ()
         .getOQLQuery (
-                      "select CONFIGURATION from owep.modele.configuration.MConfiguration CONFIGURATION where mId = $1") ;
+                      "select CONFIGURATION from owep.modele.configuration.MConfigurationSite CONFIGURATION where mId = $1") ;
       lRequete.bind (1) ;
       lResultat = lRequete.execute () ;
 
       if (lResultat.size () > 0)
       {
-        mConfiguration = (MConfiguration) lResultat.next () ;
+        mConfiguration = (MConfigurationSite) lResultat.next () ;
       }
       getBaseDonnees ().commit () ;
       
@@ -180,6 +180,7 @@ public class CConnexion extends HttpServlet
   {
     mLogin = getRequete ().getParameter ("login") ;
     mPassword = getRequete ().getParameter ("pwd") ;
+    mPassword = MCollaborateur.encode(mPassword);
   }
 
   /**
@@ -209,15 +210,7 @@ public class CConnexion extends HttpServlet
 
       
       //traitement de la localisation
-        //Sélection de la langue dans la BD
-        String langue = new String(mConfiguration.getLangue());
-        String pays = new String(mConfiguration.getPays());
-      
-        //Création du ressource bundle
-        Locale currentLocale;
-        ResourceBundle messages;
-        currentLocale = new Locale(langue, pays);
-        messages = ResourceBundle.getBundle("MessagesBundle", currentLocale);
+        ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle");
      
         //ajout dans la session du resource bundle
         mSession.setMessages(messages);

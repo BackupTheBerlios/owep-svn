@@ -1,0 +1,925 @@
+/**************************************************************************************************
+ * Styles généraux
+ **************************************************************************************************/
+body
+{
+  background-color        : rgb(255,255,255) ;
+  scrollbar-base-color    : rgb(80,123,184) ;
+  scrollbar-3dlight-color : rgb(255,255,255) ;
+  scrollbar-arrow-color   : rgb(255,255,255) ;
+}
+a
+{
+  color           : rgb(57,101,198) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  text-decoration : none ;
+}
+a:link
+{
+  color           : rgb(57,101,198) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  text-decoration : none ;
+}
+a:hover
+{
+  color           : rgb(57,101,198) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  text-decoration : underline ;
+}
+a:visited
+{
+  color           : rgb(57,101,198) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  text-decoration : none ;
+}
+.titre
+{
+  color           : rgb(51,85,165) ;
+  font-family     : arial ;
+  font-size       : 32px ;
+  font-weight     : bold ;
+  margin          : 0px 0px 32px 0px ;
+  text-align      : center ;
+  text-decoration : underline ;
+}
+.titre1
+{
+  color           : rgb(51,85,165) ;
+  font-family     : arial ;
+  font-size       : 22px ;
+  font-weight     : bold ;
+  text-decoration : underline ;
+}
+.titre2
+{
+  color       : rgb(51,85,165) ;
+  font-family : arial ;
+  font-size   : 16px ;
+  font-weight : bold ;
+}
+.titre3
+{
+  color       : rgb(51,85,165) ;
+  font-family : arial ;
+  font-size   : 12px ;
+  font-weight : bold ;
+}
+.texte
+{
+  color       : black ;
+  font-family : arial ;
+  font-size   : 12px ;
+  text-indent : 24px ;
+}
+.texteImportant
+{
+  text-align  : center ;
+  color       : black ;
+  font-family : arial ;
+  font-size   : 12px ;
+  font-weight : bold ;
+  text-indent : 24px ;
+}
+.texteObligatoire
+{
+  text-align  : center ;
+  color       : black ;
+  font-family : arial ;
+  font-size   : 10px ;
+  font-weight : bold ;
+  text-indent : 24px ;
+}
+.texteMessage
+{
+  text-align  : center ;
+  color       : rgb(80,123,184) ;
+  font-family : arial ;
+  font-size   : 12px ;
+  font-weight : bold ;
+  text-indent : 24px ;
+}
+.texteSubmit
+{
+  text-align : right ;
+}
+a.niveau1:active
+{
+  color           : rgb(255,255,255) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+a.niveau1:hover
+{
+  color           : rgb(255,255,255) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : underline ;
+}
+a.niveau1:link
+{
+  color           : rgb(255,255,255) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+a.niveau1:visited
+{
+  color           : rgb(255,255,255) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+}
+a.niveau2:active
+{
+  color           : rgb(80,123,184) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+a.niveau2:hover
+{
+  color           : rgb(80,123,184) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight      : bold ;
+  text-decoration : underline ;
+}
+a.niveau2:link
+{
+  color           : rgb(80,123,184) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+a.niveau2:visited
+{
+  color           : rgb(80,123,184) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+}
+a.niveau3:active
+{
+  color           : rgb(0,0,0) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+a.niveau3:hover
+{
+  color           : rgb(0,0,0) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight      : bold ;
+  text-decoration : underline ;
+}
+a.niveau3:link
+{
+  color           : rgb(0,0,0) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+a.niveau3:visited
+{
+  color           : rgb(0,0,0) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+}
+a.texte:active
+{
+  color           : rgb(0,0,0) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  text-decoration : none ;
+}
+a.texte:hover
+{
+  color           : rgb(0,0,0) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  text-decoration : underline ;
+}
+a.texte:link
+{
+  color           : rgb(0,0,0) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  text-decoration : none ;
+}
+a.texte:visited
+{
+  color           : rgb(0,0,0) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+}
+
+
+
+
+
+/**************************************************************************************************
+ * Styles formulaires
+ **************************************************************************************************/
+input.bouton
+{
+  background-color : rgb(80,123,184) ;
+  border           : solid rgb(57,101,198) ;
+  border-width     : 1px 1px 1px 1px ;
+  color            : rgb(255,255,255) ;
+  font-family      : arial ;
+  font-size        : 12px ;
+  font-weight      : bold ;
+  margin           : 1px 0px 1px 0px ;
+  padding-bottom   : 2px ;
+  padding-top      : 2px ;
+}
+input.niveau1
+{
+  background-color : rgb(80,123,184) ;
+  border           : solid rgb(57,101,198) ;
+  border-width     : 1px 1px 1px 1px ;
+  color            : rgb(255,255,255) ;
+  font-family      : arial ;
+  font-size        : 12px ;
+  font-weight      : bold ;
+  margin           : 1px 0px 1px 0px ;
+  padding-bottom   : 2px ;
+  padding-top      : 2px ;
+}
+input.niveau2
+{
+  background-color : rgb(171,221,229) ;
+  border           : solid rgb(57,101,198) ;
+  border-width     : 1px 1px 1px 1px ;
+  color            : rgb(51,85,165) ;
+  font-family      : arial ;
+  font-size        : 12px ;
+  font-weight      : bold ;
+  margin           : 1px 0px 1px 0px ;
+  padding-bottom   : 2px ;
+  padding-top      : 2px ;
+}
+textarea.niveau2
+{
+  background-color : rgb(171,221,229) ;
+  border           : solid rgb(57,101,198) ;
+  border-width     : 1px 1px 1px 1px ;
+  color            : rgb(51,85,165) ;
+  font-family      : arial ;
+  font-size        : 12px ;
+  font-weight      : bold ;
+  margin           : 1px 0px 1px 0px ;
+  padding-bottom   : 2px ;
+  padding-top      : 2px ;
+}
+select.niveau1
+{
+  background-color : rgb(80,123,184) ;
+  border           : solid rgb(57,101,198) ;
+  border-width     : 1px 1px 1px 1px ;
+  color            : rgb(255,255,255) ;
+  font-family      : arial ;
+  font-size        : 12px ;
+  font-weight      : bold ;
+  margin           : 1px 0px 1px 0px ;
+}
+select.niveau2
+{
+  background-color : rgb(171,221,229) ;
+  border           : solid rgb(57,101,198) ;
+  border-width     : 1px 1px 1px 1px ;
+  color            : rgb(51,85,165) ;
+  font-family      : arial ;
+  font-size        : 12px ;
+  font-weight      : bold ;
+  margin           : 1px 0px 1px 0px ;
+}
+
+
+
+
+
+/**************************************************************************************************
+ * Styles tableaux
+ **************************************************************************************************/
+table.tableau
+{
+  border       : solid rgb(57,101,198) ;
+  border-width : 2px 2px 1px 1px ;
+  font-family  : arial ;
+}
+td.caseNiveau1
+{
+  background-color : rgb(80,123,184) ;
+  border           : solid rgb(57,101,198) ;
+  border-width     : 0px 0px 1px 1px ;
+  color            : rgb(255,255,255) ;
+  font-family      : arial ;
+  font-size        : 12px ;
+  font-weight      : bold ;
+  padding-bottom   : 2px ;
+  padding-left     : 2px ;
+  padding-right    : 2px ;
+  padding-top      : 2px ;
+  text-align       : center ;
+}
+td.caseNiveau2
+{
+  background-color : rgb(171,221,229) ;
+  border           : solid rgb(57,101,198) ;
+  border-width     : 0px 0px 1px 1px ;
+  color            : rgb(57,101,198) ;
+  font-family      : arial ;
+  font-size        : 12px ;
+  font-weight      : bold ;
+  padding-left     : 2px ;
+  padding-right    : 2px ;
+  padding-top      : 2px ;
+  padding-bottom   : 2px ;
+  text-align       : left ;
+}
+td.caseNiveau2Italic
+{
+  background-color : rgb(171,221,229) ;
+  border           : solid rgb(57,101,198) ;
+  border-width     : 0px 0px 1px 1px ;
+  color            : rgb(57,101,198) ;
+  font-family      : arial ;
+  font-size        : 12px ;
+  font-weight      : bold ;
+  font-style      : italic ;
+  padding-left     : 2px ;
+  padding-right    : 2px ;
+  padding-top      : 2px ;
+  padding-bottom   : 2px ;
+  text-align       : left ;
+}
+td.caseNiveau3
+{
+  background-color : rgb(255,255,255) ;
+  border           : solid rgb(57,101,198) ;
+  border-width     : 0px 0px 1px 1px ;
+  color            : black ;
+  font-family      : arial ;
+  font-size        : 12px ;
+  padding-bottom   : 2px ;
+  padding-left     : 2px ;
+  padding-right    : 2px ;
+  padding-top      : 2px ;
+  text-align       : left ;
+}
+td.caseNiveau3Italic
+{
+  background-color : rgb(255,255,255) ;
+  border           : solid rgb(57,101,198) ;
+  border-width     : 0px 0px 1px 1px ;
+  color            : black ;
+  font-family      : arial ;
+  font-size        : 12px ;
+  font-style      : italic ;
+  padding-bottom   : 2px ;
+  padding-left     : 2px ;
+  padding-right    : 2px ;
+  padding-top      : 2px ;
+  text-align       : left ;
+}
+td.caseNiveau2SansBordure
+{
+  background-color : rgb(255,255,255) ;
+  color            : rgb(57,101,198) ;
+  font-family      : arial ;
+  font-size        : 14px ;
+  font-weight      : bold ;
+  padding-left     : 2px ;
+  padding-right    : 2px ;
+  padding-top      : 2px ;
+  padding-bottom   : 2px ; 
+}
+
+td.caseNiveau3Lien
+{
+  background-color : rgb(255,255,255) ;
+  border           : solid rgb(57,101,198) ;
+  border-width     : 0px 0px 1px 1px ;
+  color            : black ;
+  font-family      : arial ;
+  font-size        : 12px ;
+  font-weight      : bold ;
+  padding-bottom   : 2px ;
+  padding-left     : 2px ;
+  padding-right    : 2px ;
+  padding-top      : 2px ;
+  text-align       : left ;
+}
+
+td.caseNiveau3SansBordure
+{
+  background-color : rgb(255,255,255) ;
+  color            : black ;
+  font-family      : arial ;
+  font-size        : 12px ;
+  padding-bottom   : 2px ;
+  padding-left     : 2px ;
+  padding-right    : 2px ;
+  padding-top      : 2px ;
+  text-align       : left ;
+}
+
+
+
+
+
+/**************************************************************************************************
+ * Styles régions généraux
+ **************************************************************************************************/
+table.regionGauche
+{
+  border       : solid rgb(57,101,198) ;
+  border-width : 2px 0px 0px 2px ;
+  width        : 170px ;
+  height       : 100% ;
+}
+table.regionDroite
+{
+  border       : solid rgb(57,101,198) ;
+  border-width : 2px 2px 0px 0px ;
+  height       : 100% ;
+  width        : 100% ;
+}
+td.regionPrincipal
+{
+  border         : solid rgb(57,101,198) ;
+  border-width   : 1px 0px 0px 1px ;
+  height         : 100% ;
+  padding-bottom : 16px ;
+  padding-left   : 12px ;
+  padding-right  : 12px ;
+  padding-top    : 16px ;
+  vertical-align : top ;
+}
+td.regionAidePrincipal
+{
+  border         : solid rgb(57,101,198) ;
+  border-width   : 2px 2px 2px 2px ;
+  height         : 100% ;
+  padding-bottom : 16px ;
+  padding-left   : 12px ;
+  padding-right  : 12px ;
+  padding-top    : 16px ;
+  vertical-align : top ;
+}
+
+
+
+
+
+
+/**************************************************************************************************
+ * Logo
+ **************************************************************************************************/
+td.regionLogo
+{
+  background-image : url(/owep/Image/Blue/regionLogo.png) ;
+  height           : 159px ;
+  width            : 170px ;
+}
+
+
+
+
+/**************************************************************************************************
+ * Bouttons
+ **************************************************************************************************/
+img.bouttonPlay
+{
+  background-image : url(/owep/Image/Blue/play.jpg) ;
+  height           : 25px ;
+  width            : 25px ;
+}
+img.bouttonPlayActif
+{
+  background-image : url(/owep/Image/Blue/play_actif.jpg) ;
+  height           : 25px ;
+  width            : 25px ;
+}
+img.bouttonPause
+{
+  background-image : url(/owep/Image/Blue/pause.jpg) ;
+  height           : 25px ;
+  width            : 25px ;
+}
+img.bouttonPauseActif
+{
+  background-image : url(/owep/Image/Blue/pause_actif.jpg) ;
+  height           : 25px ;
+  width            : 25px ;
+}
+img.bouttonStop
+{
+  background-image : url(/owep/Image/Blue/stop.jpg) ;
+  height           : 25px ;
+  width            : 25px ;
+}
+
+
+
+
+/**************************************************************************************************
+ * Menu
+ **************************************************************************************************/
+td.regionMenu
+{
+  width : 170px ;
+}
+td.caseMenuProjet
+{
+  background-image : url(/owep/Image/Blue/caseMenuListe.png) ;
+  height           : 33px ;
+  padding-bottom   : 2px ;
+  text-align       : center ;
+}
+td.caseMenuConnexion
+{
+  background-image : url(/owep/Image/Blue/caseMenuNiveau2.png) ;
+  height           : 18px ;
+  text-align       : center ;
+}
+td.caseMenuNiveau1
+{
+  background-color : rgb(80,123,184) ;
+  background-image : url(/owep/Image/Blue/caseMenuNiveau1.png) ;
+  height           : 27px ;
+  padding-bottom   : 2px ;
+  padding-left     : 9px ;
+}
+td.caseMenuNiveau2
+{
+  background-image : url(/owep/Image/Blue/caseMenuNiveau2.png) ;
+  height           : 18px ;
+  padding-left     : 18px ;
+}
+td.caseMenuSeparation
+{
+  background-image : url(/owep/Image/Blue/caseMenuSeparation.png) ;
+  height           : 16px ;
+  font-family      : arial ;
+  font-size        : 6px ;
+}
+td.caseMenuSeparation2
+{
+  background-image : url(/owep/Image/Blue/caseMenuNiveau2.png) ;
+  font-family      : arial ;
+  font-size        : 6px ;
+}
+select.menuProjet
+{
+  background-color : rgb(80,123,184) ;
+  color            : rgb(255,255,255) ;
+  font-family      : arial ;
+  font-size        : 13px ;
+  font-weight      : bolder ;
+}
+a.menuConnexion:active
+{
+  color           : rgb(51,85,165) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+a.menuConnexion:link
+{
+  color           : rgb(51,85,165) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+a.menuConnexion:hover
+{
+  color           : rgb(51,85,165) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : underline ;
+}
+a.menuConnexion:visited
+{
+  color           : rgb(51,85,165) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+}
+p.menuNiveau1
+{
+  color       : white ;
+  font-family : arial ;
+  font-size   : 12px ;
+  font-weight : bold ;
+}
+.menuNiveau2
+{
+  color           : rgb(0,0,0) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+}
+a.menuNiveau2:active
+{
+  color           : rgb(51,85,165) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+a.menuNiveau2:hover
+{
+  color           : rgb(51,85,165) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : underline ;
+}
+a.menuNiveau2:link
+{
+  color           : rgb(51,85,165) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+a.menuNiveau2:visited
+{
+  color           : rgb(51,85,165) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+}
+
+
+
+
+
+
+/**************************************************************************************************
+ * Messagerie
+ **************************************************************************************************/
+td.regionMessagerie
+{
+  background-color : rgb(171,221,229) ;
+}
+td.caseMessageCommande
+{
+  background-image : url(/owep/Image/Blue/messageCommande.png) ;
+  border-width     : 0px 0px 0px 0px ;
+  height           : 26px ;
+  padding-left     : 5px ;
+  padding-bottom   : 3px ;
+  width            : 90px ;
+}
+td.caseMessage
+{
+  padding-left  : 5px ;
+  padding-right : 5px ;
+}
+a.messageCommande:active
+{
+  color           : white ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+a.messageCommande:link
+{
+  color           : white ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+a.messageCommande:hover
+{
+  color           : white ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : underline ;
+}
+a.messageCommande:visited
+{
+  color           : white ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+a.messageOrigine:active
+{
+  color           : rgb(51,85,165) ;
+  font-family     : arial ;
+  font-size       : 11px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+a.messageOrigine:link
+{
+  color           : rgb(51,85,165) ;
+  font-family     : arial ;
+  font-size       : 11px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+a.messageOrigine:hover
+{
+  color           : rgb(51,85,165) ;
+  font-family     : arial ;
+  font-size       : 11px ;
+  font-weight     : bold ;
+  text-decoration : underline ;
+}
+a.messageOrigine:visited
+{
+  color           : rgb(51,85,165) ;
+  font-family     : arial ;
+  font-size       : 11px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+p.message
+{
+  color       : rgb(0,0,0) ;
+  font-family : arial ;
+  font-size   : 11px ;
+  font-weight : bold ;
+}
+
+
+
+
+
+
+/**************************************************************************************************
+ * Pied de page
+ **************************************************************************************************/
+td.regionPied
+{
+  background-color : rgb(80,123,184) ;
+  background-image : url(/owep/Image/Blue/regionPied.png) ;
+  border           : solid rgb(57,101,198) ;
+  border-width     : 0px 2px 2px 2px ;
+  height           : 18px ;
+  text-align       : center ;
+}
+.pied
+{
+  color       : rgb(255,255,255) ;
+  font-family : arial ;
+  font-size   : 12px ;
+  font-weight : bold ;
+}
+
+
+/**************************************************************************************************
+ * Aide en ligne
+ **************************************************************************************************/
+img.imageAide
+{
+  border           : solid rgb(57,101,198) ;
+  border-width     : 1px 1px 1px 1px ;
+  margin           : 0px 0px 30px 0px ;
+  text-align       : right ;
+}
+img.iconeAide
+{
+  background-image : url(/owep/Image/Blue/iconeAide.png) ;
+  height           : 48px ;
+  width            : 48px ;
+}
+img.iconeCaseAide
+{
+  background-image : url(/owep/Image/Blue/iconeTexteAide.png) ;
+  height           : 48px ;
+  width            : 48px ;
+}
+.caseAide
+{
+  color          : rgb(0,0,0) ;
+  font-family    : arial ;
+  font-size      : 12px ;
+  padding-bottom : 20px ;
+  padding-top    : 20px ;
+  text-align     : justify ;
+}
+div.domTT
+{
+  border           : 1px solid rgb(57,101,198) ;
+  background-color : rgb(80,123,184) ;
+}
+div.domTTCaption
+{
+  font-family : serif ;
+  font-size   : 12px ;
+  font-weight : bold ;
+  padding     : 1px 2px ;
+  color       : rgb(255,255,255) ;
+}
+div.domTTContent
+{
+  font-size        : 12px ;
+  font-family      : sans-serif ;
+  padding          : 3px 2px ;
+  background-color : rgb(171,221,229) ;
+}
+
+
+
+
+/**************************************************************************************************
+ * Page d'identification
+ **************************************************************************************************/
+table.regionIdentificationGauche
+{
+  border            : solid rgb(57,101,198) ;
+  border-width      : 2px 0px 0px 2px ;
+  height       : 100% ;
+  width        : 100% ;
+}
+table.regionIdentificationDroite
+{
+  border       : solid rgb(57,101,198) ;
+  border-width : 2px 2px 0px 0px ;
+  height       : 100% ;
+  width        : 100% ;
+}
+td.regionIdentificationPrincipal
+{
+  border         : solid rgb(57,101,198) ;
+  border-width   : 0px 0px 0px 0px ;
+  height         : 100% ;
+  padding-bottom : 16px ;
+  padding-left   : 12px ;
+  padding-right  : 12px ;
+  padding-top    : 16px ;
+  vertical-align : top ;
+}
+img.logoIdentification
+{
+  background-image  : url(/owep/Image/Blue/regionIdentification.png) ;
+  background-repeat : no-repeat ;
+  height            : 400px ;
+  vertical-align    : top ;
+  width             : 400px ;
+}
+
+
+/**************************************************************************************************
+ * Page d'identification
+ **************************************************************************************************/
+img.logoInstallation
+{
+  background-image  : url(/owep/Image/Red/Instal.jpg) ;
+  background-repeat : no-repeat ;
+  height           : 130px ;
+  width            : 130px ;
+  vertical-align    : top ;
+}
+table.regionInstallationCentre
+{
+  border       : solid rgb(128,0,0) ;
+  border-width : 0px 2px 0px 2px ;
+  height       : 100% ;
+  width        : 100% ;
+  align        : center;
+}
+table.regionLogoInstallation
+{
+  border            : solid rgb(128,0,0) ;
+  border-width      : 2px 0px 0px 2px ;
+  height       : 100% ;
+  width        : 100% ;
+}
+table.regionInstallationDroite
+{
+  border       : solid rgb(128,0,0) ;
+  border-width : 2px 2px 0px 0px ;
+  height       : 100% ;
+  width        : 100% ;
+}
+td.InstallationCentre
+{
+  vertical-align : top;
+}

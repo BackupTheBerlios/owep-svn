@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+
+
 /**
  * Une tâche représente le travail d'une personne sur un ou plusieurs artefact. La tâche contient
  * les estimations et mesures de charges et de dates.
@@ -39,8 +41,11 @@ public class MTache extends MModeleBase
   private MActivite      mActivite ;         // Activité que la tâche instancie. 
   private MCollaborateur mCollaborateur ;    // Collaborateur réalisant la tâche.
   private MIteration     mIteration ;        // Itération durant laquelle est effectuée la tâche.
-  private Date           mDateDebutChrono ; // Date a laquelle on demarre le chrono pour le temps passé sur une tache
-  private ArrayList      mConditions ;      // Liste de conditions nécessaires pour que la tâche soit dans l'état prêt
+  private long           mDateDebutChrono ;  // Date a laquelle on demarre le chrono pour le temps passé sur une tache.
+  private ArrayList      mConditions ;       // Liste de conditions nécessaires pour que la tâche soit dans l'état prêt.
+  private ArrayList      mProblemesEntrees ; // Liste des problèmes résultant de la tâche.
+  private ArrayList      mProblemesSorties ; // Liste des problèmes que résout la tâche.
+
 
 
   /**
@@ -50,10 +55,13 @@ public class MTache extends MModeleBase
   {
     super () ;
     
-    mEtat = ETAT_NON_DEMARRE ;
+    mEtat = ETAT_CREEE ;
     
-    mArtefactsEntrees = new ArrayList () ;
-    mArtefactsSorties = new ArrayList () ;
+    mArtefactsEntrees  = new ArrayList () ;
+    mArtefactsSorties  = new ArrayList () ;
+    mConditions        = new ArrayList () ;
+    mProblemesEntrees  = new ArrayList () ;
+    mProblemesSorties  = new ArrayList () ;
   }
 
 
@@ -74,29 +82,19 @@ public class MTache extends MModeleBase
     mId              = pId ;
     mNom             = pNom ;
     mDescription     = pDescription ;
-    mEtat            = ETAT_NON_DEMARRE ;
+    mEtat            = ETAT_CREEE ;
     mChargeInitiale  = pChargeInitiale ;
     mDateDebutPrevue = pDateDebutPrevue ;
     mDateFinPrevue   = pDateFinPrevue ;
     
-    mArtefactsEntrees = new ArrayList () ;
-    mArtefactsSorties = new ArrayList () ;
+    mArtefactsEntrees  = new ArrayList () ;
+    mArtefactsSorties  = new ArrayList () ;
+    mConditions        = new ArrayList () ;
+    mProblemesEntrees  = new ArrayList () ;
+    mProblemesSorties  = new ArrayList () ;
   }
 
 
-  /**
-   * Crée une instance de MArtefact initialisée avec les données du chef de projet.
-   * @param pId Identifiant unique de l'artefact.
-   * @param pNom Nom de la tâche.
-   * @param pDescription Description de la tâche.
-   * @param pChargeInitiale Charge prévue par le chef de projet.
-   * @param pTempsPasse Temps passé sur la tâche.
-   * @param pResteAPasser Temps restant à passer sur la tâche.
-   * @param pDateDebutPrevue Date de début prévue par le chef de projet.
-   * @param pDateDebutReelle Date de début réelle de la tâche.
-   * @param pDateFinPrevue Date de fin prévue par le chef de projet.
-   * @param pDateFinReelle Date de fin réelle de la tâche.
-   */
   public MTache (int pId, String pNom, String pDescription, double pChargeInitiale,
                  double pTempsPasse, double pResteAPasser, Date pDateDebutPrevue,
                  Date pDateFinPrevue, Date pDateDebutReelle, Date pDateFinReelle)
@@ -106,7 +104,7 @@ public class MTache extends MModeleBase
     mId              = pId ;
     mNom             = pNom ;
     mDescription     = pDescription ;
-    mEtat            = ETAT_NON_DEMARRE ;
+    mEtat            = ETAT_CREEE ;
     mChargeInitiale  = pChargeInitiale ;
     mTempsPasse      = pTempsPasse ;
     mResteAPasser    = pResteAPasser ;
@@ -115,10 +113,40 @@ public class MTache extends MModeleBase
     mDateFinPrevue   = pDateFinPrevue ;
     mDateFinReelle   = pDateFinReelle ;
     
-    mArtefactsEntrees = new ArrayList () ;
-    mArtefactsSorties = new ArrayList () ;
+    mArtefactsEntrees  = new ArrayList () ;
+    mArtefactsSorties  = new ArrayList () ;
+    mConditions        = new ArrayList () ;
+    mProblemesEntrees  = new ArrayList () ;
+    mProblemesSorties  = new ArrayList () ;
   }
+  
 
+  /**
+   * Constructeur par copie.
+   * @param pTache Tache à recopier.
+   */
+  public MTache (MTache pTache)
+  {
+    super () ;
+    
+    mNom             = pTache.getNom() ;
+    mDescription     = pTache.getDescription() ;
+    mEtat            = pTache.getEtat() ;
+    mChargeInitiale  = pTache.getChargeInitiale() ;
+    mTempsPasse      = pTache.getTempsPasse() ;
+    mResteAPasser    = pTache.getResteAPasser() ;
+    mDateDebutPrevue = pTache.getDateDebutPrevue() ;
+    mDateDebutReelle = pTache.getDateDebutReelle() ;
+    mDateFinPrevue   = pTache.getDateFinPrevue() ;
+    mDateFinReelle   = pTache.getDateFinReelle() ;
+    mCollaborateur   = pTache.getCollaborateur() ;
+    mActivite        = pTache.getActivite() ;
+    
+    mArtefactsEntrees  = pTache.getListeArtefactsEntrees() ;
+    mArtefactsSorties  = pTache.getListeArtefactsSorties() ;
+  }
+  
+  
   /**
    * Insertion de la tâche courante dans la base de données.
    * @param pConnection Connexion avec la base de données
@@ -154,26 +182,26 @@ public class MTache extends MModeleBase
     lRequest.executeQuery (lRequete) ;*/
     
     Statement lRequest = pConnection.createStatement (ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE) ;
-    ResultSet curseurArtefact = lRequest.executeQuery ("SELECT * FROM TAC_TACHE") ;
-    curseurArtefact.moveToInsertRow () ;
-    curseurArtefact.updateString (2, getNom ()) ;
-    curseurArtefact.updateString (3, getDescription ()) ;
-    curseurArtefact.updateDouble (4,  getChargeInitiale ()) ;
-    curseurArtefact.updateDouble (5, getTempsPasse ()) ;
-    curseurArtefact.updateDouble (6, getResteAPasser ()) ;
-    curseurArtefact.updateInt (7, getEtat ()) ;
-    curseurArtefact.updateDate (8, new java.sql.Date (getDateDebutPrevue ().getTime())) ;
-    curseurArtefact.updateDate (9, new java.sql.Date (getDateFinPrevue ().getTime ())) ;
+    ResultSet curseurTache = lRequest.executeQuery ("SELECT * FROM TAC_TACHE") ;
+    curseurTache.moveToInsertRow () ;
+    curseurTache.updateString (2, getNom ()) ;
+    curseurTache.updateString (3, getDescription ()) ;
+    curseurTache.updateDouble (4,  getChargeInitiale ()) ;
+    curseurTache.updateDouble (5, getTempsPasse ()) ;
+    curseurTache.updateDouble (6, getResteAPasser ()) ;
+    curseurTache.updateInt (7, getEtat ()) ;
+    curseurTache.updateDate (8, new java.sql.Date (getDateDebutPrevue ().getTime())) ;
+    curseurTache.updateDate (9, new java.sql.Date (getDateFinPrevue ().getTime ())) ;
     //curseurArtefact.updateDate (10, new java.sql.Date (getDateFinPrevue ().getTime ())) ;
     //curseurArtefact.updateDate (11 , new java.sql.Date (getDateFinPrevue ().getTime ())) ;
-    curseurArtefact.updateInt (12, getIteration ().getId ()) ;
-    curseurArtefact.updateInt (13, getCollaborateur ().getId ()) ;
+    curseurTache.updateInt (12, getIteration ().getId ()) ;
+    curseurTache.updateInt (13, getCollaborateur ().getId ()) ;
     if (getActivite () != null)
     {
-      curseurArtefact.updateInt (14, getActivite ().getId ()) ;
+      curseurTache.updateInt (14, getActivite ().getId ()) ;
     }
-    curseurArtefact.insertRow () ;
-    curseurArtefact.close () ;
+    curseurTache.insertRow () ;
+    curseurTache.close () ;
     //pConnection.commit () ;
     
 //  Préparation de la requête permettant d'obtenir l'id de la tâche
@@ -217,6 +245,7 @@ public class MTache extends MModeleBase
     Statement lRequest = pConnection.createStatement () ;
     lRequest.executeUpdate (lRequete) ;
   }
+  
   
   /**
    * Récupère l'activité que la tâche instancie.
@@ -562,7 +591,7 @@ public class MTache extends MModeleBase
 
   /**
    * Initialise la liste des conditions pour le passage de la tâche à l'état prêt
-   * @param pArtefactsEntrees Liste des conditions pour le passage de la tâche à l'état prêt
+   * @param pConditions Liste des conditions pour le passage de la tâche à l'état prêt
    */
   public void setListeConditions (ArrayList pConditions)
   {
@@ -601,6 +630,26 @@ public class MTache extends MModeleBase
   }
 
 
+  /**
+   * Supprime la condition.
+   * @param pIndice Indice de la condition dans la liste.
+   */
+  public void supprimerCondition (int pIndice)
+  {
+    mConditions.remove (pIndice) ;
+  }
+
+
+  /**
+   * Supprime la condition.
+   * @param pCondition Condition de la tâche.
+   */
+  public void supprimerCondition (MCondition pCondition)
+  {
+    mConditions.remove (pCondition) ;
+  }
+  
+  
   /**
    * Récupère l'identifiant de la tâche.
    * @return Identifiant unique de la tâche
@@ -743,13 +792,73 @@ public class MTache extends MModeleBase
   {
     return mTempsPasse / (mTempsPasse + mResteAPasser) ;
   }
+ 
 
-  
+  /**
+   * Récupère la liste des problèmes résultant de la tâche.
+   * @return Liste des problèmes résultant de la tâche.
+   */
+  public ArrayList getListeProblemesEntrees ()
+  {
+    return mProblemesEntrees ;
+  }
+
+
+  /**
+   * Initialise la liste des problèmes résultant de la tâche.
+   * @param pProblemesEntrees Liste des problèmes résultant de la tâche.
+   */
+  public void setListeProblemesEntrees (ArrayList pProblemesEntrees)
+  {
+    mProblemesEntrees = pProblemesEntrees ;
+  }
+
+
+  /**
+   * Ajoute un problème résultant de la tâche.
+   * @param pProblemeEntree Problème résultant de la tâche.
+   */
+  public void addProblemeEntree (MProbleme pProblemeEntree)
+  {
+    mProblemesEntrees.add (pProblemeEntree) ;
+  }
+
+
+  /**
+   * Récupère la liste des problèmes que résout la tâche.
+   * @return Liste des problèmes que résout la tâche.
+   */
+  public ArrayList getListeProblemesSorties ()
+  {
+    return mProblemesSorties ;
+  }
+
+
+  /**
+   * Initialise la liste des problèmes que résout la tâche.
+   * @param pProblemesSorties Liste des problèmes que résout la tâche.
+   */
+  public void setListeProblemesSorties (ArrayList pProblemesSorties)
+  {
+    mProblemesSorties = pProblemesSorties ;
+  }
+ 
+
+  /**
+   * Ajoute un problème que résout la tâche.
+   * @param pProblemeSortie Problème que résout la tâche.
+   */
+  public void addProblemeSortie (MProbleme pProblemeSortie)
+  {
+    mProblemesSorties.add (pProblemeSortie) ;
+  }
+
+
    /**
    * Recupere la date de lancement du chronometre.
    * @return Date de lancement du chronometre
    */
-  public Date getDateDebutChrono ()
+  public long getDateDebutChrono ()
   {
     return mDateDebutChrono ;
   }
@@ -759,7 +868,7 @@ public class MTache extends MModeleBase
    * Initialise la date de lancement du chronometre.
    * @param pDateDebutChrono Date de lancement du chronometre.
    */
-  public void setDateDebutChrono (Date pDateDebutChrono)
+  public void setDateDebutChrono (long pDateDebutChrono)
   {
     mDateDebutChrono = pDateDebutChrono ;
   }

@@ -1,40 +1,56 @@
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<%@page import="owep.controle.CConstante" %>
 
 <center>
-
 <%
   // Récupération des parametres
   String mProbleme = (String) request.getAttribute("mProbleme"); // Probleme rencontré lors de l'enregistrement du collaborateur
 
   //localisation
-  String langue = new String("fr");
-  String pays = new String("FR");
-  
-  java.util.Locale currentLocale;
   java.util.ResourceBundle messages;
-  currentLocale = new java.util.Locale(langue, pays);
-
-  messages = java.util.ResourceBundle.getBundle("MessagesBundle", currentLocale);
+  messages = java.util.ResourceBundle.getBundle("MessagesBundle");
 
   // Si l'attribut mProbleme existe alors un probleme est survenu lors de l'dentification
   if(mProbleme != null)
   {
 %>
-Le login et le mot de passe saisi ne sont pas valide<BR>
+Le login et le mot de passe saisi ne sont pas valide<br>
 <%
   }
 %>
 
-<form action="../Outil/Connexion" method="post">
+<form action="/owep/Outil/Connexion" method="post">
   <table class="tableauInvisible" border="0" cellpadding="1" cellspacing="1">
     <tr>
-      <td class="caseInvisible" rowspan="2" align="right"><%=messages.getString("identificationUtilisateur")%><br><%=messages.getString("identificationMotDePasse")%></td>
-      <td class="caseInvisible" rowspan="2"><input type=text size=10 name="login"><br><input type="PASSWORD" size=10 name="pwd"></td>
+      <td class="caseInvisible">
+        <font class="titre3" onmouseover="tooltipOn(this, event, 'Entrez votre nom d\'utilisateur pour le logiciel OWEP.')" onmouseout="tooltipOff(this, event)">
+          <%=messages.getString("identificationUtilisateur")%>
+        </font>
+      </td>
+      <td class="caseInvisible">
+        <input class="niveau2" type="text" size="<%= CConstante.TXT_LOGIN %>" name="login">
+      </td>
+    </tr>
+    <tr>
+      <td class="caseInvisible">
+        <font class="titre3" onmouseover="tooltipOn(this, event, 'Entrez votre mot de passe pour le logiciel OWEP.')" onmouseout="tooltipOff(this, event)">
+          <%=messages.getString ("identificationMotDePasse")%>
+        </font>
+      </td>
+      <td class="caseInvisible">
+        <input class="niveau2" type="PASSWORD" size="<%= CConstante.TXT_LOGIN %>" name="pwd">
+      </td>
     </tr>
   </table>
   <br><br>
   <font class="texteSubmit">
-    <input type="submit" value="<%=messages.getString("identificationValider")%>">
+    <input class="bouton" type="submit" value="<%=messages.getString ("identificationValider")%>">
   </font>
 </form>
 </center>
+
+<!-- Aide en ligne -->
+<script type="text/javascript" language="JavaScript">
+pCodeAide  = "Entrez votre <b>nom d'utilisateur</b> et votre <b>mot de passe</b> pour accéder au logiciel OWEP." ;
+pCodeAide += " Si vous vous connectez pour la première fois, le <b>mot de passe</b> est identique à votre <b>nom d'utilisateur</b>." ;
+pCodeAide += " Veillez donc bien à les modifier dans la section <b>\"Modifier son profil\"</b> accéssible depuis le menu." ;
+</script>

@@ -10,11 +10,36 @@ var gCouleurFond     = null ;
  */
 function isVide (pValeur, pLibelle)
 {
-  var lRegExpression = /^\S+$/ ;
+  var lNonVide = false ;
   
-  if(! lRegExpression.test (pValeur))
+  for (i = 0; i < pValeur.length; i ++)
+  {
+    if (' '.indexOf (pValeur.charAt (i)) < 0)
+    {
+      lNonVide = true ;
+    }
+  }
+  
+  if (! lNonVide)
   {
     gChampsInvalides += 'Le champ \'' + pLibelle + '\' est vide.\n' ;
+    return true ;
+  }
+  else
+  {
+    return false ;
+  }
+}
+
+
+/**
+ * Méthode vérifiant qu'un champ n'est pas vide.
+ */
+function isSelectVide (pListe, pLibelle)
+{
+  if(pListe.length == 0)
+  {
+    gChampsInvalides += 'La liste \'' + pLibelle + '\' est vide.\n' ;
     return true ;
   }
   else
@@ -29,8 +54,7 @@ function isVide (pValeur, pLibelle)
  */
 function isDate (pDate, pLibelle)
 {
-  //var lRegExpression = /^\d{1}\d{1}\-\d{1}\d{1}\-\d{1}\d{1}\d{1}\d{1}$/ ;
-  var lRegExpression = /^\d{1}\d{1}\d{1}\d{1}\-\d{1}\d{1}\-\d{1}\d{1}$/ ;
+  var lRegExpression = /^\d{1}\d{1}\/\d{1}\d{1}\/\d{1}\d{1}\d{1}\d{1}$/ ;
   
   if ((pDate.length != 0) && (! lRegExpression.test (pDate)))
   {
@@ -49,9 +73,17 @@ function isDate (pDate, pLibelle)
  */
 function isInteger (pInteger, pLibelle)
 {
-  var lRegExpression = /^\S+$/ ;
+  var lChiffre = true ;
   
-  if ((pInteger.length != 0) && (! lRegExpression.test (pInteger)))
+  for (i = 0; i < pInteger.length; i ++)
+  {
+    if ('0123456789'.indexOf (pInteger.charAt (i)) < 0)
+    {
+      lChiffre = false ;
+    }
+  }
+  
+  if (! lChiffre)
   {
     gChampsInvalides += 'Le champ \'' + pLibelle + '\' est incorrect.\n' ;
     return false ;
@@ -76,7 +108,7 @@ function validerChamps ()
   }
   else
   {
-    document.forms[0].submit () ;
+    document.pFormulaire.submit () ;
   }
 } 
 
@@ -91,16 +123,36 @@ function validerSelect (pSelect, pMessage)
   }
   else
   {
-    document.forms[0].submit () ;
+    document.pFormulaire.submit () ;
   }
 }
 
-function ajout(listeDep, listeArr)
+/** 
+ * Fonction qui ajoute l'item sélectionné d'une liste vers une autre.
+ */
+function transfererItem (pListeDep, pListeArr)
 {
-  var option = new Option(listeDep.options[listeDep.selectedIndex].text,listeDep.options[listeDep.selectedIndex].value); 
-  listeArr.options[listeArr.length] = option; 
-  listeDep.options[listeDep.selectedIndex] = null ;
+  if (pListeDep.selectedIndex != -1)
+  {
+    var lOption = new Option(pListeDep.options[pListeDep.selectedIndex].text, pListeDep.options[pListeDep.selectedIndex].value); 
+    pListeArr.options[pListeArr.length]        = lOption ; 
+    pListeDep.options[pListeDep.selectedIndex] = null ;
+    pListeArr.selectedIndex = pListeArr.length - 1 ;
+    
+    // S'il reste des éléments dans la liste, sélectionne le premier.
+    if (pListeDep.length > 0)
+    {
+      pListeDep.selectedIndex = 0 ;
+    }
+  }
 }
+
+
+
+
+
+
+
 
 
   function enleve(listeArr)

@@ -13,8 +13,58 @@
     <taglib-location>/WEB-INF/tld/transfert.tld</taglib-location>
   </taglib>
   
+  
+  <servlet>
+    <servlet-name>CIndex</servlet-name>
+    <servlet-class>owep.controle.CIndex</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CIndex</servlet-name>
+    <url-pattern>/Index</url-pattern>
+  </servlet-mapping>
+  
+  
+  <!-- Liste des servlets pour l'installation -->
 
-  <!-- Liste des Servlets -->
+  <servlet>
+    <servlet-name>CInstallation</servlet-name>
+    <servlet-class>owep.controle.installation.CInstallation</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CInstallation</servlet-name>
+    <url-pattern>/Installation</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>CConfigurationBD</servlet-name>
+    <servlet-class>owep.controle.installation.CConfigurationBD</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CConfigurationBD</servlet-name>
+    <url-pattern>/Installation/ConfigurationBD</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>CSuperviseur</servlet-name>
+    <servlet-class>owep.controle.installation.CSuperviseur</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CSuperviseur</servlet-name>
+    <url-pattern>/Installation/Superviseur</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>CSite</servlet-name>
+    <servlet-class>owep.controle.installation.CSite</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CSite</servlet-name>
+    <url-pattern>/Installation/Site</url-pattern>
+  </servlet-mapping>-->
+
+
+  
+  <!-- Liste des servlets pour les tâches -->
   <servlet> 
     <servlet-name>CListeTacheVisu</servlet-name> 
     <servlet-class>owep.controle.tache.CListeTacheVisu</servlet-class> 
@@ -32,20 +82,7 @@
     <servlet-name>CTacheVisu</servlet-name> 
     <url-pattern>/Tache/TacheVisu</url-pattern> 
   </servlet-mapping>
- 
-  <!-- Liste des Servlets pour les artefacts --> 
-  <servlet> 
-    <servlet-name>CArtefactAjout</servlet-name> 
-    <servlet-class>owep.controle.artefact.CArtefactAjout</servlet-class> 
-  </servlet> 
-  <servlet-mapping> 
-    <servlet-name>CArtefactAjout</servlet-name> 
-    <url-pattern>/Artefact/ArtefactAjout</url-pattern> 
-  </servlet-mapping>   
-  
-  
-  <!-- Liste des Servlets pour la connexion -->  
-  
+   
   <servlet> 
     <servlet-name>CEtat</servlet-name> 
     <servlet-class>owep.controle.tache.CEtat</servlet-class> 
@@ -64,6 +101,64 @@
     <url-pattern>/Tache/ValidationRapport</url-pattern> 
   </servlet-mapping>
   
+  <!-- Liste des Servlets pour les avancements --> 
+  
+  <servlet> 
+    <servlet-name>CAvancementGlobalProjet</servlet-name> 
+    <servlet-class>owep.controle.avancement.CAvancementGlobalProjet</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CAvancementGlobalProjet</servlet-name> 
+    <url-pattern>/Avancement/AvancementGlobalProjet</url-pattern> 
+  </servlet-mapping>
+  <servlet> 
+    <servlet-name>CAvancementProjet</servlet-name> 
+    <servlet-class>owep.controle.avancement.CAvancementProjet</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CAvancementProjet</servlet-name> 
+    <url-pattern>/Avancement/AvancementProjet</url-pattern> 
+  </servlet-mapping>
+  
+  <servlet> 
+    <servlet-name>CAvancementCollaborateur</servlet-name> 
+    <servlet-class>owep.controle.avancement.CAvancementCollaborateur</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CAvancementCollaborateur</servlet-name> 
+    <url-pattern>/Avancement/AvancementCollaborateur</url-pattern> 
+  </servlet-mapping>
+  
+  <servlet> 
+    <servlet-name>CAvancementTachesCollabs</servlet-name> 
+    <servlet-class>owep.controle.avancement.CAvancementTachesCollabs</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CAvancementTachesCollabs</servlet-name> 
+    <url-pattern>/Avancement/AvancementTachesCollabs</url-pattern> 
+  </servlet-mapping>
+  
+  <servlet> 
+    <servlet-name>CDetailAvancementCollab</servlet-name> 
+    <servlet-class>owep.controle.avancement.CDetailAvancementCollab</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CDetailAvancementCollab</servlet-name> 
+    <url-pattern>/Avancement/DetailAvancementCollab</url-pattern> 
+  </servlet-mapping>
+ 
+  <!-- Liste des Servlets pour les artefacts --> 
+  <servlet> 
+    <servlet-name>CArtefactAjout</servlet-name> 
+    <servlet-class>owep.controle.artefact.CArtefactAjout</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CArtefactAjout</servlet-name> 
+    <url-pattern>/Artefact/ArtefactAjout</url-pattern> 
+  </servlet-mapping>   
+  
+  
+  <!-- Liste des Servlets pour la connexion -->   
   <servlet> 
     <servlet-name>CConnexion</servlet-name> 
     <servlet-class>owep.controle.outil.CConnexion</servlet-class> 
@@ -90,7 +185,16 @@
     <servlet-name>CCreationCollaborateur</servlet-name> 
     <url-pattern>/Processus/CreationCollaborateur</url-pattern> 
   </servlet-mapping> 
-
+  
+  <servlet> 
+    <servlet-name>CModificationProfil</servlet-name> 
+    <servlet-class>owep.controle.outil.CModificationProfil</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CModificationProfil</servlet-name> 
+    <url-pattern>/Outil/ModificationProfil</url-pattern> 
+  </servlet-mapping> 
+  
   <servlet> 
     <servlet-name>COuvrirProjet</servlet-name> 
     <servlet-class>owep.controle.projet.COuvrirProjet</servlet-class> 
@@ -99,9 +203,19 @@
     <servlet-name>COuvrirProjet</servlet-name> 
     <url-pattern>/Projet/OuvrirProjet</url-pattern> 
   </servlet-mapping> 
-
-
-    <!-- Liste des Servlets Processus -->
+  
+  <servlet> 
+    <servlet-name>CDemarrerProjet</servlet-name> 
+    <servlet-class>owep.controle.outil.CDemarrerProjet</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CDemarrerProjet</servlet-name> 
+    <url-pattern>/Outil/DemarrerProjet</url-pattern> 
+  </servlet-mapping> 
+  
+  
+  
+  <!-- Liste des servlets pour le processus -->
   <servlet>
     <servlet-name>CProjetVisu</servlet-name>
     <servlet-class>owep.controle.processus.CProjetVisu</servlet-class>
@@ -110,17 +224,6 @@
     <servlet-name>CProjetVisu</servlet-name>
     <url-pattern>/Processus/ProjetVisu</url-pattern>
   </servlet-mapping>
-    
-    <!-- Navigation -->
-  <servlet>
-    <servlet-name>CNavigationIteration</servlet-name>
-    <servlet-class>owep.controle.navigation.CNavigationIteration</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>CNavigationIteration</servlet-name>
-    <url-pattern>/Navigation/NavigationIteration</url-pattern>
-  </servlet-mapping>
-  
   <servlet>
     <servlet-name>CIterationModif</servlet-name>
     <servlet-class>owep.controle.processus.CIterationModif</servlet-class>
@@ -130,10 +233,169 @@
     <url-pattern>/Processus/IterationModif</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+    <servlet-name>CActiviteImprevue</servlet-name>
+    <servlet-class>owep.controle.processus.CActiviteImprevue</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CActiviteImprevue</servlet-name>
+    <url-pattern>/Processus/ActiviteImprevue</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>CTacheImprevue</servlet-name>
+    <servlet-class>owep.controle.processus.CTacheImprevue</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CTacheImprevue</servlet-name>
+    <url-pattern>/Processus/TacheImprevue</url-pattern>
+  </servlet-mapping>
+  
+   <servlet>
+    <servlet-name>CCloturerIteration</servlet-name>
+    <servlet-class>owep.controle.processus.CCloturerIteration</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CCloturerIteration</servlet-name>
+    <url-pattern>/Processus/CloturerIteration</url-pattern>
+  </servlet-mapping> 
+  
+  <!-- Liste des servlets pour la gestion de projets -->
+  <servlet>
+    <servlet-name>CListeProblemeVisu</servlet-name>
+    <servlet-class>owep.controle.gestion.CListeProblemeVisu</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CListeProblemeVisu</servlet-name>
+    <url-pattern>/Gestion/ListeProblemeVisu</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>CProblemeModif</servlet-name>
+    <servlet-class>owep.controle.gestion.CProblemeModif</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CProblemeModif</servlet-name>
+    <url-pattern>/Gestion/ProblemeModif</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>CProblemeSuppr</servlet-name>
+    <servlet-class>owep.controle.gestion.CProblemeSuppr</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CProblemeSuppr</servlet-name>
+    <url-pattern>/Gestion/ProblemeSuppr</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>CListeRisqueVisu</servlet-name>
+    <servlet-class>owep.controle.gestion.CListeRisqueVisu</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CListeRisqueVisu</servlet-name>
+    <url-pattern>/Gestion/ListeRisqueVisu</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>CRisqueModif</servlet-name>
+    <servlet-class>owep.controle.gestion.CRisqueModif</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CRisqueModif</servlet-name>
+    <url-pattern>/Gestion/RisqueModif</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>CRisqueSuppr</servlet-name>
+    <servlet-class>owep.controle.gestion.CRisqueSuppr</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CRisqueSuppr</servlet-name>
+    <url-pattern>/Gestion/RisqueSuppr</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+   <!-- Liste des servlets pour les iterations -->
+  <servlet> 
+    <servlet-name>CListeIndicateurs</servlet-name> 
+    <servlet-class>owep.controle.iteration.CListeIndicateurs</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CListeIndicateurs</servlet-name> 
+    <url-pattern>/Iteration/ListeIndicateurs</url-pattern> 
+  </servlet-mapping> 
+  <servlet> 
+    <servlet-name>CValidationIndicateurs</servlet-name> 
+    <servlet-class>owep.controle.iteration.CValidationIndicateurs</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CValidationIndicateurs</servlet-name> 
+    <url-pattern>/Iteration/ValidationIndicateurs</url-pattern> 
+  </servlet-mapping>
+  
+  
+  
+  <!-- Navigation -->
+  <servlet>
+    <servlet-name>CNavigationIteration</servlet-name>
+    <servlet-class>owep.controle.navigation.CNavigationIteration</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CNavigationIteration</servlet-name>
+    <url-pattern>/Navigation/NavigationIteration</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>CRefreshIteration</servlet-name>
+    <servlet-class>owep.controle.navigation.CRefreshIteration</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CRefreshIteration</servlet-name>
+    <url-pattern>/Navigation/RefreshIteration</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  <servlet> 
+    <servlet-name>CCloturerProjet</servlet-name> 
+    <servlet-class>owep.controle.processus.CCloturerProjet</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CCloturerProjet</servlet-name> 
+    <url-pattern>/Processus/CloturerProjet</url-pattern> 
+  </servlet-mapping> 
+  
+  <servlet> 
+    <servlet-name>CGererProjet</servlet-name> 
+    <servlet-class>owep.controle.processus.CGererProjet</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CGererProjet</servlet-name> 
+    <url-pattern>/Processus/GererProjet</url-pattern> 
+  </servlet-mapping> 
+  
+  <servlet> 
+    <servlet-name>CExporterProjet</servlet-name> 
+    <servlet-class>owep.controle.outil.CExporterProjet</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CExporterProjet</servlet-name> 
+    <url-pattern>/Outil/ExporterProjet</url-pattern> 
+  </servlet-mapping> 
+  
+  
+  <!-- Configuration du site -->
+  <servlet> 
+    <servlet-name>CConfigurationSite</servlet-name> 
+    <servlet-class>owep.controle.configuration.CConfigurationSite</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CConfigurationSite</servlet-name> 
+    <url-pattern>/Configuration/ConfigurationSite</url-pattern> 
+  </servlet-mapping> 
+  
+  
   <!-- Configuration de la session -->
   <session-config>
-	<session-timeout>30</session-timeout>
+	<session-timeout>3000</session-timeout>
   </session-config>
+  
 
 
 </web-app>

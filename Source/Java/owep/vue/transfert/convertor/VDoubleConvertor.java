@@ -8,19 +8,19 @@ package owep.vue.transfert.convertor ;
 public class VDoubleConvertor
 {
   /**
-   * Permet de retourner la classe Double.
-   * @return la classe Double.
+   * Retourne la classe Double.
+   * @return Classe Double.
    */
   public static Class getType ()
   {
-    return Double.TYPE ;  
+    return Double.TYPE;  
   }
   
   
   /**
-   * Permet de convetir la valeur passer en Double.
-   * @param pValeur la valeur que l'on doit convertir.
-   * @return la valeur convertit au format Double.
+   * Permet de convetir la valeur passée en Double.
+   * @param pValeur Valeur que l'on doit convertir.
+   * @return Valeur convertit au format Double.
    */
   public static Object getObject (String pValeur)
   {

@@ -47,15 +47,20 @@
   }
   
 	/**Méthode vérifiant que le champ soit bien une date*/
-  function isDate(valeur)
+  function isDate (pDate, pLibelle)
+{
+  var lRegExpression = /^\d{1}\d{1}\/\d{1}\d{1}\/\d{1}\d{1}\d{1}\d{1}$/ ;
+  
+  if ((pDate.length != 0) && (! lRegExpression.test (pDate)))
   {
-    var re = /^\d{1}\d{1}\/\d{1}\d{1}\/\d{1}\d{1}\d{1}\d{1}$/;
-    if(!re.test(valeur))
-    {
-      return false;
-     }
-     return true;
+    gChampsInvalides += 'Le champ \'' + pLibelle + '\' est incorrect.\n' ;
+    return false ;
   }
+  else
+  {
+    return true ;
+  }
+}
 	
   function isEmpty(valeur)
   {

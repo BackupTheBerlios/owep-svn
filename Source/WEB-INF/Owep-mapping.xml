@@ -1,0 +1,90 @@
+<?xml version="1.0" ?>
+<!DOCTYPE databases PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN" "http://castor.exolab.org/mapping.dtd">
+
+<mapping>
+  <class name="owep.modele.execution.MCollaborateur" identity="mId">
+    <map-to table="col_collaborateur"/>
+    <field name="mId" type="integer" get-method="getId" set-method="setId">
+      <sql name="COL_ID" type="integer"/>
+    </field>
+    <field name="mNom" type="string" get-method="getNom" set-method="setNom">
+      <sql name="COL_NOM" type="char"/>
+    </field>
+    <field name="mPrenom" type="string" get-method="getPrenom" set-method="setPrenom">
+      <sql name="COL_PRENOM" type="char"/>
+    </field>
+    <field name="mAdresse" type="string" get-method="getAdresse" set-method="setAdresse">
+      <sql name="COL_ADRESSE" type="char"/>
+    </field>
+    <field name="mTelephone" type="string" get-method="getTelephone" set-method="setTelephone">
+      <sql name="COL_TELEPHONE" type="char"/>
+    </field>
+    <field name="mPortable" type="string" get-method="getPortable" set-method="setPortable">
+      <sql name="COL_PORTABLE" type="char"/>
+    </field>
+    <field name="mEmail" type="string" get-method="getEmail" set-method="setEmail">
+      <sql name="COL_EMAIL" type="char"/>
+    </field>
+    <field name="mListeTaches" type="owep.modele.execution.MTache" collection="arraylist" get-method="getListeTaches" set-method="setListeTaches">
+      <sql many-key="COL_COLLABORATEUR_COL_ID"/>
+    </field>
+  </class>
+  
+  <class name="owep.modele.execution.MTache" identity="mId">
+    <map-to table="tac_tache"/>
+    <field name="mId" type="integer" get-method="getId" set-method="setId">
+      <sql name="TAC_ID" type="integer"/>
+    </field>
+    <field name="mNom" type="string" get-method="getNom" set-method="setNom">
+      <sql name="TAC_NOM" type="char"/>
+    </field>
+    <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
+      <sql name="TAC_DESCRIPTION" type="char"/>
+    </field>
+    <field name="mChargeInitiale" type="double" get-method="getChargeInitiale" set-method="setChargeInitiale">
+      <sql name="TAC_CHARGE_INITIALE" type="float"/>
+    </field>
+    <field name="mTempsPasse" type="double" get-method="getTempsPasse" set-method="setTempsPasse">
+      <sql name="TAC_TEMPS_PASSE" type="float"/>
+    </field>
+    <field name="mResteAPasser" type="double" get-method="getResteAPasser" set-method="setResteAPasser">
+      <sql name="TAC_RESTE_A_PASSER" type="float"/>
+    </field>
+    <field name="mDateDebutPrevue" type="date" get-method="getDateDebutPrevue" set-method="setDateDebutPrevue">
+      <sql name="TAC_DATE_DEBUT_PREVUE" type="date"/>
+    </field>
+    <field name="mDateFinPrevue" type="date" get-method="getDateFinPrevue" set-method="setDateFinPrevue">
+      <sql name="TAC_DATE_FIN_PREVUE" type="date"/>
+    </field>
+    <field name="mDateDebutReelle" type="date" get-method="getDateDebutReelle" set-method="setDateDebutReelle">
+      <sql name="TAC_DATE_DEBUT_REELLE" type="date"/>
+    </field>
+    <field name="mDateFinReelle" type="date" get-method="getDateFinReelle" set-method="setDateFinReelle">
+      <sql name="TAC_DATE_FIN_REELLE" type="date"/>
+    </field>
+    <field name="mCollaborateur" type="owep.modele.execution.MCollaborateur" get-method="getCollaborateur" set-method="setCollaborateur">
+      <sql name="COL_COLLABORATEUR_COL_ID" />
+    </field>
+    <field name="mListeArtefactSortie" type="owep.modele.execution.MArtefact" collection="arraylist" get-method="getListeArtefactSortie" set-method="setListeArtefactSortie">
+      <sql many-key="TAC_TACHE_TAC_ID"/>
+    </field>
+  </class>
+  
+  <class name="owep.modele.execution.MArtefact" identity="mId">
+    <map-to table="art_artefact" xml="artefact" />
+    <field name="mId" type="integer" get-method="getId" set-method="setId">
+      <sql name="ART_ID" type="integer"/>
+    </field>
+    <field name="mNom" type="string" get-method="getNom" set-method="setNom">
+      <sql name="ART_NOM" type="char"/>
+    </field>
+    <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
+      <sql name="ART_DESCRIPTION" type="char"/>
+    </field>
+    <field name="mTache" type="owep.modele.execution.MTache" get-method="getTache" set-method="setTache">
+      <sql name="TAC_TACHE_TAC_ID" />
+    </field>
+  </class>
+  
+</mapping>
+

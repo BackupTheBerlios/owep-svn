@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN" "http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd"> 
+
+<taglib>
+  
+  <tlibversion>1.0</tlibversion>
+  <jspversion>1.1</jspversion>
+  <shortname>Simple Template System</shortname>
+  
+  <!-- tag template -->
+  <tag>
+    <name>template</name>
+    <tagclass>owep.vue.template.VTemplateTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+
+    <!-- liste des attributs -->
+    <attribute>
+      <name>nom</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  
+  
+  <!-- tag section -->
+  <tag>   
+    <name>section</name>
+    <tagclass>owep.vue.template.VSectionTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+    
+    <!-- liste des attributs -->
+    <attribute>
+      <name>region</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>contenu</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>typePage</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  
+  
+  <!-- tag region -->
+  <tag>   
+    <name>region</name>
+    <tagclass>owep.vue.template.VRegionTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+    
+    <!-- liste des attributs -->
+    <attribute>
+      <name>nom</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  
+</taglib>
